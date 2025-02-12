@@ -69,5 +69,25 @@ require 'php/acoes.php';
             }
         ?>
     </fieldset>
+
+    <fieldset>
+        <legend>Excluir projetos</legend>
+        <form action="php/acoes.php?acao=excluirprojeto" method="post" enctype="multipart/form-data">
+            <select name="nome" id="slctexcluir">
+                <?php
+                    foreach($lista as $projetos){
+                ?>
+                    <option value="<?=$projetos->nome?>">
+                        <?=$projetos->titulo?>
+                    </option>
+
+                <?php
+                    }
+                ?>
+            </select>
+
+            <button onclick="return confirm('Tem certeza que quer excluir?');">Excluir</button>
+        </form>
+    </fieldset>
 </body>
 </html>
