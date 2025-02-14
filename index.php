@@ -24,9 +24,11 @@ require 'php/acoes.php';
 
             if(tagatt.includes("disabled")){
                 tagpdf.removeAttribute("disabled");
+                tagpdf.setAttribute("required", "")
             }else{
                 if(!tagatt.includes("disable")){
                     tagpdf.setAttribute("disabled", "")
+                    tagpdf.removeAttribute("required");
                 }
             }
             
@@ -39,13 +41,13 @@ require 'php/acoes.php';
         <legend>Novo projeto</legend>
         <form action="php/acoes.php?acao=criarnovoprojeto" method="post" enctype="multipart/form-data">
             <label for="titulo">Título da obra:</label>
-            <input type="text" name="titulo" id="titulo">
+            <input type="text" name="titulo" id="titulo" required />
             
             <label for="autor">Nome do autor:</label>
-            <input type="text" name="autor" id="autor">
+            <input type="text" name="autor" id="autor" required />
 
             <label for="fonte">Fonte da obra em .txt:</label>
-            <input type="file" name="fonte" accept=".txt" id="fonte">
+            <input type="file" name="fonte" accept=".txt" id="fonte" required />
 
             <label for="tipo">O projeto usará o texto-fonte em .pdf?</label>
             <input type="checkbox" name="tipo" id="tipo" onclick="habilitarpdf()">
@@ -59,30 +61,33 @@ require 'php/acoes.php';
     <fieldset>
         <legend>Abrir um projeto</legend>
         <?php
+        if(isset($lista)){
             foreach($lista as $projetos){
         ?>
-            <a href="acessarprojeto.php?id_proj=<?=$projetos->id_proj?>"><div>
-                <p>Projeto: <?=$projetos->titulo?></p>
-                <p>Criado em: <?=$projetos->criado?></p>    
+            <a href="acessarprojeto.php?id_proj=<?=$projetos['id_proj']?>"><div>
+                <p>Projeto: <?=$projetos['titulo']?></p>
+                <p>Criado em: <?=$projetos['criado']?></p>    
             </div></a>
         <?php
-            }
+            }}
         ?>
     </fieldset>
 
     <fieldset>
         <legend>Excluir projetos</legend>
         <form action="php/acoes.php?acao=excluirprojeto" method="post" enctype="multipart/form-data">
-            <select name="id_proj" id="slctexcluir">
+            <select name="titulo" id="slctexcluir">
                 <?php
-                    foreach($lista as $projetos){
+                    if(isset($lista)){
+                        
+                        foreach($lista as $projetos){
                 ?>
-                    <option value="<?=$projetos->id_proj?>">
-                        <?=$projetos->titulo?>
+                    <option value="<?=$projetos['titulo']?>">
+                        <?=$projetos['titulo']?>
                     </option>
 
                 <?php
-                    }
+                    }}
                 ?>
             </select>
 

@@ -5,7 +5,8 @@ class Tarefa{
     private $nome;
     private $autor;
     private $tipo;
-    private $fonte;
+    private $tabela;
+    private $fontebkp;
     private $caminho;
 
     public function __get($atributo){

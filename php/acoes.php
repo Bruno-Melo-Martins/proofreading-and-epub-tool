@@ -9,120 +9,129 @@
 
 	switch($acao){
 		case "criarnovoprojeto":
-			// LEMBRAR fazer um verificador de tabela já existente
-
-			// Pegar os valores do formulário
-			$titulo = $_POST['titulo'];
-			$autor = $_POST['autor'];
-			$tipo = $_POST['tipo'];
-
-			if($tipo == 'on'){
-				$arquivopdf = $_FILES['pedefe']['tmp_name'];
-			}
-			$fonte = "";
-			
-			// Pegar o texto do txt
-			$arquivofonte = fopen($_FILES['fonte']['tmp_name'], 'r');
-
-			while (!feof($arquivofonte)) {
-				$line = fgets($arquivofonte);
-				$line = trim($line);
-				$fonte .= $line. PHP_EOL;
-
-			}
-
-			
-			fclose($arquivofonte);
-
-			
-			// Criar a pasta do projeto e mover arquivo pdf para ela caso exista
-			// path será usada para definir caminhos somente aqui
-			$path = './projetos/'. $titulo;
-
-
-			if(!file_exists($path)){
-				// Criar pasta do projeto
-				$path = '../projetos/'. $titulo;
-				mkdir($path, 0777);
-
-				// Criar pasta do arquivo pdf
-				$path = '../projetos/'. $titulo. '/arquivopdf/';
-				mkdir($path, 0777);
-
-				if($tipo == "on"){
-					// Mover arquivo pdf para pasta do projeto
-					$path = '../projetos/'. $titulo. '/arquivopdf/'. $titulo. '.pdf';
-					move_uploaded_file($arquivopdf, $path);
-				}
-			}
-			
-			// Caminho que será registrado na tabela
-			$caminho = 'projetos/'. $titulo;
-
-			// Criação do nome (distinto de titulo por não ter espaçamento nem caracteres maiusculos)
-			$nome = strtolower(str_replace(' ', '-', $titulo));
-
-			// INSERIR PROJETO NOVO NA TABELA TB_PROJETOS:
-				$tarefa = new Tarefa();
-
-				// Definir dados a serem inseridos
-				$tarefa->__set('titulo', $titulo);
-				$tarefa->__set('nome', $nome);
-
-				// Estabelecer conexão
-				$conexao = new Conexao();
-
-				// Iniciar a tarefa
-				$tarefaService = new TarefaService($conexao, $tarefa);
-
-				// Executar
-				$tarefaService->inserirprojetolista();
-
-			// CRIAR NOVA TABELA COM DADOS DO PROJETO
-				$tarefa = new Tarefa();
-
-				// Definir dados a serem inseridos
-				$tarefa->__set('titulo', $titulo);
-				$tarefa->__set('nome', $nome);
-				$tarefa->__set('autor', $autor);
-				if($tipo == "on"){
-					$tarefa->__set('tipo', 2);
+			// VERIFICAR ARQUIVOS:
+				$files[] = $_FILES['fonte']['tmp_name'];
+				// Definir tipo (1 ou 2)
+				if(isset($_POST['tipo'])){
+					$tipo = 2;
+					$files[] = $_FILES['pedefe']['tmp_name'];
 				}else{
-					$tarefa->__set('tipo', 1);
+					$tipo = 1;
 				}
-				$tarefa->__set('fonte', $fonte);
-				
 
-				// Estabelecer conexão
+				$soMinha = new SoMinha();
+				$resultado = $soMinha->verificarelementos($files);
+				if($resultado == 'Erro: Arquivo faltando'){
+					//echo 'faiô';
+					header("Location: ../index.php?erro=$resultado");
+					break;
+				}else{
+					//echo 'acertô';
+				}
+			// DECLARAR VARIÁVEIS
+				$titulo = $_POST['titulo'];
+				$autor = $_POST['autor'];
+				$fonte = $_FILES['fonte']['tmp_name'];
+				if($tipo == 2){
+					$pdf = $_FILES['pedefe']['tmp_name'];
+				}
+
+			// VERIFICAR SE JÁ EXISTE UM PROJETO DE MESMO NOME EM TB_LISTA_PROJETOS:
+
+				$tarefa = new Tarefa();
 				$conexao = new Conexao();
 
-				// Iniciar a tarefa
+				$tarefa->__set('titulo', $titulo);
+				//echo "$titulo <br>";
+
 				$tarefaService = new TarefaService($conexao, $tarefa);
+				$resultado = $tarefaService->verificartabela();
 
-				// Executar
-				$tarefaService->inserirprojetonovo();
+				if ($resultado[0]['COUNT(*)'] != 0){
+					header('Location: ../index.php?erro=ProjetoJaExiste');
+					break;
+				}
+				
+			// CRIAR PASTA DO PROJETO E SUBPASTAS
 
-				header("Location: ../index.php");
-		break;
+			$caminho = "../projetos/$titulo";
 
-		case "buscarlista":
+
+			if(!file_exists($caminho)){
+				// Criar pasta do projeto
+				mkdir($caminho, 0777);
+				// Criar pasta do arquivo pdf
+				$caminho = "../projetos/$titulo/arquivos/";
+				mkdir($caminho, 0777);
+				// Mover arquivo txt para pasta do projeto
+				$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
+				move_uploaded_file($fonte, $caminho);
+				// Se é tipo dois também coloque o pdf
+				if($tipo == 2){
+					// Mover arquivo pdf para pasta do projeto
+					$caminho = "../projetos/$titulo/arquivos/$titulo.pdf";
+					move_uploaded_file($pdf, $caminho);
+				}
+				// Criar um backup
+				$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
+				move_uploaded_file($fonte, $caminho);
+			}
+			// INSERIR DADOS NAS TABELAS:
+
 			$tarefa = new Tarefa();
 			$conexao = new Conexao();
 
+			$tarefa->__set('titulo', $titulo);
+			$tarefa->__set('autor', $autor);
+			$tarefa->__set('tipo', $tipo);
+
+			//echo "$titulo <br>";
+
+			$tarefaService = new TarefaService($conexao, $tarefa);
+			$tarefaService->inserirprojetolista();
+			$tarefaService->inserirprojetonovo();
+
+			header("Location: ../index.php");
+		break;
+
+		case 'buscarlista':
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
 			$tarefaService = new TarefaService($conexao, $tarefa);
 			$lista = $tarefaService->buscarlista();
 		break;
 
-		case "buscarprojeto":
+		case 'excluirprojeto':
+			// CONSEGUIR O TITULO
+				$titulo = $_POST['titulo'];
+				echo $titulo;
+
+			// EXCLUIR PASTA E SUBPASTAS
+			$caminho = "../projetos/$titulo";
+			$soMinha = new SoMinha();
+
+			if ($soMinha->deletarPasta($caminho)) {
+				echo "Pasta excluída com sucesso.";
+			} else {
+				echo "Erro ao excluir a pasta.";
+			}
+
+			// EXCLUIR LINHAS DAS TABELAS
+
 			$tarefa = new Tarefa();
 			$conexao = new Conexao();
 
-			$tarefa->__set('nome', $nome);
+			$tarefa->__set('titulo', $titulo);
 
 			$tarefaService = new TarefaService($conexao, $tarefa);
-			$projeto = $tarefaService->buscarprojeto();
+			$tarefaService->excluirprojeto();
+			$tarefaService->excluirprojetolista();
+
+			header("Location: ../index.php");
+
+
 		break;
-	}
 	
+	}
 
 	

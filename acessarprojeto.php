@@ -1,6 +1,6 @@
 <?php
-if(isset($_GET['nome'])){
-    $nome = $_GET['nome'];
+if(isset($_GET['id_proj'])){
+    $id_proj = $_GET['id_proj'];
 }else{
     header('Location: index.php');
 }
