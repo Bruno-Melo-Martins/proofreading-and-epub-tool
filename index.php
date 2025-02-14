@@ -2,7 +2,6 @@
 $acao = 'buscarlista';
 
 require 'php/acoes.php';
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -64,7 +63,7 @@ require 'php/acoes.php';
         if(isset($lista)){
             foreach($lista as $projetos){
         ?>
-            <a href="acessarprojeto.php?id_proj=<?=$projetos['id_proj']?>"><div>
+            <a href="acessarprojeto.php?titulo=<?=$projetos['titulo']?>"><div>
                 <p>Projeto: <?=$projetos['titulo']?></p>
                 <p>Criado em: <?=$projetos['criado']?></p>    
             </div></a>

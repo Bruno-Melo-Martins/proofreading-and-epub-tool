@@ -55,6 +55,14 @@ class TarefaService {
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function buscarprojeto() { //read
+		$query = 'SELECT * FROM tb_projetos WHERE titulo = :titulo';
+		$stmt = $this->conexao->prepare($query);
+		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 
 	public function excluirprojeto() { //read
 		$query = 'DELETE FROM tb_projetos WHERE titulo = :titulo';

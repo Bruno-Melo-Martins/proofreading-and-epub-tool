@@ -60,12 +60,20 @@
 			if(!file_exists($caminho)){
 				// Criar pasta do projeto
 				mkdir($caminho, 0777);
-				// Criar pasta do arquivo pdf
+				// Criar pasta dos arquivos e backup
 				$caminho = "../projetos/$titulo/arquivos/";
 				mkdir($caminho, 0777);
+				$caminho = "../projetos/$titulo/backup/";
+				mkdir($caminho, 0777);
+
 				// Mover arquivo txt para pasta do projeto
 				$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
 				move_uploaded_file($fonte, $caminho);
+
+				// Mover arquivo txt para pasta do backup
+				$caminho = "../projetos/$titulo/backup/$titulo.txt";
+				move_uploaded_file($fonte, $caminho);
+
 				// Se é tipo dois também coloque o pdf
 				if($tipo == 2){
 					// Mover arquivo pdf para pasta do projeto
@@ -130,6 +138,20 @@
 			header("Location: ../index.php");
 
 
+		break;
+
+		case 'buscarprojeto':
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+
+			$tarefa->__set('titulo', $titulo);
+
+			$tarefaService = new TarefaService($conexao, $tarefa);
+			$projeto = $tarefaService->buscarprojeto();
+		break;
+
+		case 'salvartexto':
+			
 		break;
 	
 	}

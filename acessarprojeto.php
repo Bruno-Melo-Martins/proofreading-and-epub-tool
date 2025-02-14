@@ -1,12 +1,16 @@
 <?php
-if(isset($_GET['id_proj'])){
-    $id_proj = $_GET['id_proj'];
+if(isset($_GET['titulo'])){
+    $titulo = $_GET['titulo'];
 }else{
     header('Location: index.php');
 }
-$acao = 'buscarprojeto';
 
+$acao = 'buscarprojeto';
 require 'php/acoes.php';
+
+//print_r($projeto);
+$project = $projeto[0];
+//print_r($project);
 
 ?>
 <!DOCTYPE html>
@@ -14,7 +18,7 @@ require 'php/acoes.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?=$projeto[0]->titulo?></title>
+    <title><?="Etapa $project[etapa]: $project[titulo]"?></title>
     <style>
         .visualizador span{
             display: block;
@@ -24,21 +28,13 @@ require 'php/acoes.php';
 </head>
 <body>
     <?php
-    if($projeto[0]->etapa == 1){
-        $fonte = explode(PHP_EOL, $projeto[0]->fonte);
+    if($project['etapa'] == 1){
+        
         
     ?>
-        <div class="visualizador">
-            <?php
-                $x = 0;
-                foreach($fonte as $linha){
-            ?>
-                <span id="<?=$x?>"><?=$linha?></span>
-            <?php
-                $x++;
-                }    
-            ?>
-        </div>
+        <h1 id="titulo"><?=$project['titulo']?></h1>
+        <h2>Editor de Texto</h2>
+    
     
     <?php
     }
