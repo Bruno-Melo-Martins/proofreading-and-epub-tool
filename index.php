@@ -61,7 +61,7 @@ require 'php/acoes.php';
         <?php
             foreach($lista as $projetos){
         ?>
-            <a href="acessarprojeto.php?nome=<?=$projetos->nome?>"><div>
+            <a href="acessarprojeto.php?id_proj=<?=$projetos->id_proj?>"><div>
                 <p>Projeto: <?=$projetos->titulo?></p>
                 <p>Criado em: <?=$projetos->criado?></p>    
             </div></a>
@@ -73,11 +73,11 @@ require 'php/acoes.php';
     <fieldset>
         <legend>Excluir projetos</legend>
         <form action="php/acoes.php?acao=excluirprojeto" method="post" enctype="multipart/form-data">
-            <select name="nome" id="slctexcluir">
+            <select name="id_proj" id="slctexcluir">
                 <?php
                     foreach($lista as $projetos){
                 ?>
-                    <option value="<?=$projetos->nome?>">
+                    <option value="<?=$projetos->id_proj?>">
                         <?=$projetos->titulo?>
                     </option>
 
