@@ -150,8 +150,9 @@
 			$projeto = $tarefaService->buscarprojeto();
 		break;
 
-		case 'salvartexto':
-			
+		case 'buscartxtbruto':
+
+
 		break;
 	
 	}
