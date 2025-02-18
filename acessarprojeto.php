@@ -25,6 +25,7 @@ $etapa = $projeto['etapa'];
     </style>
 </head>
 <body>
+    <p><a href="index.php"><-Voltar</a></p>
     <?php
     $time = strtotime($projeto['criado']);
     $data = date("j \of F \of Y",$time);

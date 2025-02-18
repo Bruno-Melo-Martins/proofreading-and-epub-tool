@@ -150,23 +150,62 @@
 
 		case 'buscartxtbruto':
 			$caminho = "projetos/$titulo/arquivos/$titulo.txt";
+			$tocaminho = "projetos/$titulo/arquivos/toc.xhtml";
+
             $arquivo = fopen($caminho, 'r');
 
 			$soMinha = new SoMinha();
 			$texto = $soMinha->txtparatexto($arquivo);
+
+			if(file_exists($tocaminho)){
+				$arquivo = fopen($tocaminho, 'r');
+				$soMinha = new SoMinha();
+				$toc = $soMinha->txtparatexto($arquivo);
+			}
+			
 			
 		break;
 
 		case 'salvartxtbruto':
 			$texto = $_POST['editor'];
+			$titulo = $_POST['titulo'];
 
-			$caminho = "projetos/$titulo/arquivos/$titulo.txt";
-            $arquivo = fopen($caminho, 'r');
+			$txtcaminho = "../projetos/$titulo/arquivos/$titulo.txt";
+			$tocaminho = "../projetos/$titulo/arquivos/toc.xhtml";
 
-			$soMinha = new SoMinha();
-			$texto = $soMinha->txtparatexto($arquivo);
+			$txtvetor = explode("\n", $texto);
 
-			break;
+			// PRODUZIR UM TOC:
+			$titles = array('<(H1)>', '<(H2)>', '<(H3)>');
+			$toc = '<ol>'. PHP_EOL;
+
+			foreach($txtvetor as $linha){
+				foreach($titles as $title){
+					if(str_contains($linha, $title)){
+						$linetoc = trim(str_replace($title, '', $linha));
+						$toc .= "<li>$linetoc</li>". PHP_EOL;
+						
+					}
+				}
+			}
+
+			$toc .= '</ol>';
+			//echo $toc;
+
+			// SALVAR ARQUIVO TOC
+			$tocfile = fopen($tocaminho, 'w');
+			fwrite($tocfile, $toc);
+			fclose($tocfile);
+
+			// SOBRESCREVER ARQUIVO TXT:
+			file_put_contents($txtcaminho, $texto);
+
+			// VOLTAR PAR O EDITOR:
+			header("Location: ../etapa1.php?titulo=$titulo");
+
+
+
+		break;
 	
 	}
 

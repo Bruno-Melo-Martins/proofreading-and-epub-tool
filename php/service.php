@@ -104,29 +104,6 @@ class SoMinha {
 		return $vetor;
 	}
 
-	public function criartoc($arquivo){
-		$toc = '<nav epub:type="toc" role="doc-toc" aria-label="Table of Contents"><ol>';
-		$titles = array('<(H1)>', '<(H2)>', '<(H3)>');
-		while (!feof($arquivo)) {
-			$line = fgets($arquivo);
-			$line = trim($line);
-			$x=1;
-			
-			$toc .= "<li class='$title' id='np$x'>$line</li>";
-			foreach($titles as $title){
-				if(str_ends_with($line, $title)){
-					$line = trim(str_replace($title, '', $line));
-					$toc .= "<li class='$title' id='np$x'>$line</li>";
-					$x++;
-				}
-			}
-
-			
-		}
-		
-		$toc .= '</ol></nav>';
-		return $toc;
-	}
 
 
 	public function deletarPasta($folderPath) {
