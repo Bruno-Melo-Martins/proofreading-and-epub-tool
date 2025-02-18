@@ -16,7 +16,7 @@ class TarefaService {
 	public function verificartabela(){
 		$query = 
 				"SELECT COUNT(*) 
-				FROM tb_lista_projetos 
+				FROM tb_projetos 
 				WHERE titulo = :titulo ";
 
 		$stmt = $this->conexao->prepare($query);
@@ -24,14 +24,6 @@ class TarefaService {
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		//return $stmt->fetchAll(PDO::FETCH_OBJ);
-	}
-
-	public function inserirprojetolista() { //create
-		$query = 'INSERT INTO tb_lista_projetos(titulo) 
-				VALUES(:titulo)';
-		$stmt = $this->conexao->prepare($query);
-		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
-		$stmt->execute();
 	}
 
 	public function inserirprojetonovo() { //create
@@ -45,11 +37,7 @@ class TarefaService {
 	}
 
 	public function buscarlista() { //read
-		$query = 'SELECT
-				*
-			FROM 
-				tb_lista_projetos
-		';
+		$query = 'SELECT * FROM tb_projetos';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -66,12 +54,6 @@ class TarefaService {
 
 	public function excluirprojeto() { //read
 		$query = 'DELETE FROM tb_projetos WHERE titulo = :titulo';
-		$stmt = $this->conexao->prepare($query);
-		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
-		$stmt->execute();
-	}
-	public function excluirprojetolista() { //read
-		$query = 'DELETE FROM tb_lista_projetos WHERE titulo = :titulo';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->execute();
@@ -122,6 +104,30 @@ class SoMinha {
 		return $vetor;
 	}
 
+	public function criartoc($arquivo){
+		$toc = '<nav epub:type="toc" role="doc-toc" aria-label="Table of Contents"><ol>';
+		$titles = array('<(H1)>', '<(H2)>', '<(H3)>');
+		while (!feof($arquivo)) {
+			$line = fgets($arquivo);
+			$line = trim($line);
+			$x=1;
+			
+			$toc .= "<li class='$title' id='np$x'>$line</li>";
+			foreach($titles as $title){
+				if(str_ends_with($line, $title)){
+					$line = trim(str_replace($title, '', $line));
+					$toc .= "<li class='$title' id='np$x'>$line</li>";
+					$x++;
+				}
+			}
+
+			
+		}
+		
+		$toc .= '</ol></nav>';
+		return $toc;
+	}
+
 
 	public function deletarPasta($folderPath) {
 		if (!is_dir($folderPath)) {
@@ -142,6 +148,13 @@ class SoMinha {
 		}
 		
 		return rmdir($folderPath); // Deleta a pasta vazia
+	}
+
+	public function conversordeData($data){
+		$ingles = array('of', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+		$portugues = array('de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+		$data = str_replace($ingles, $portugues, $data);
+		return $data;
 	}
 
 }

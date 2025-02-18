@@ -36,7 +36,7 @@
 					$pdf = $_FILES['pedefe']['tmp_name'];
 				}
 
-			// VERIFICAR SE JÁ EXISTE UM PROJETO DE MESMO NOME EM TB_LISTA_PROJETOS:
+			// VERIFICAR SE JÁ EXISTE UM PROJETO DE MESMO NOME EM TB_PROJETOS:
 
 				$tarefa = new Tarefa();
 				$conexao = new Conexao();
@@ -84,7 +84,7 @@
 				$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
 				move_uploaded_file($fonte, $caminho);
 			}
-			// INSERIR DADOS NAS TABELAS:
+			// INSERIR DADOS NA TABELA:
 
 			$tarefa = new Tarefa();
 			$conexao = new Conexao();
@@ -96,7 +96,6 @@
 			//echo "$titulo <br>";
 
 			$tarefaService = new TarefaService($conexao, $tarefa);
-			$tarefaService->inserirprojetolista();
 			$tarefaService->inserirprojetonovo();
 
 			header("Location: ../index.php");
@@ -124,7 +123,7 @@
 				echo "Erro ao excluir a pasta.";
 			}
 
-			// EXCLUIR LINHAS DAS TABELAS
+			// EXCLUIR LINHA DA TABELA
 
 			$tarefa = new Tarefa();
 			$conexao = new Conexao();
@@ -133,7 +132,6 @@
 
 			$tarefaService = new TarefaService($conexao, $tarefa);
 			$tarefaService->excluirprojeto();
-			$tarefaService->excluirprojetolista();
 
 			header("Location: ../index.php");
 
@@ -151,9 +149,24 @@
 		break;
 
 		case 'buscartxtbruto':
+			$caminho = "projetos/$titulo/arquivos/$titulo.txt";
+            $arquivo = fopen($caminho, 'r');
 
-
+			$soMinha = new SoMinha();
+			$texto = $soMinha->txtparatexto($arquivo);
+			
 		break;
+
+		case 'salvartxtbruto':
+			$texto = $_POST['editor'];
+
+			$caminho = "projetos/$titulo/arquivos/$titulo.txt";
+            $arquivo = fopen($caminho, 'r');
+
+			$soMinha = new SoMinha();
+			$texto = $soMinha->txtparatexto($arquivo);
+
+			break;
 	
 	}
 

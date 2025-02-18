@@ -17,7 +17,7 @@ Young Luther and Ursula Cotta. p. 47.
 
 HISTORICAL TALES
 FOR
-YOUNG PROTESTANTS.
+YOUNG PROTESTANTS.<(H1)>
 
 PHILADELPHIA
 AMERICAN SUNDAY-SCHOOL UNION,
@@ -39,7 +39,7 @@ THE GUNPOWDER PLOT - 137
 THE FORFEITED CROWN - 153
 STORY OF THE ENGLISH BIBLE - 167
 
-PREFACE.
+PREFACE.<(H2)>
 
 Fact is as attractive as fiction, and is of much higher moral value. The pages of history contain incidents which equal in thrilling interest the most successful
 efforts of the human imagination. From its ample records, the following short stories, connected with the rise and pro gress of Scriptural Protestantism, have been selected. If it has been found necessary to advert to the dark deeds of the papacy, it is from the conviction that the principles and spirit in which they originated in former ages are not extinct in the present day. In supplying
@@ -50,7 +50,7 @@ HISTORICAL TALES
 FOR
 YOUNG PROTESTANTS.
 
-THE MERCHANT OF LYONS,
+THE MERCHANT OF LYONS,<(H2)>
 ABOUT seven hundred years ago, there lived at Lyons, in France, a wealthy merchant named Peter Waldo. His house was on a tongue of land which divides the two beautiful rivers—the Rhone and the Saone. The walls of the city, even at that period, were old and grey. It was by gloomy gateways that the traveller entered into close, narrow streets. Houses six or seven stories high, were ornamented with richly carved work in wood ; and
 [10]
 their over-hanging roofs almost touched at the projecting parts, casting deep shadows on the pathway below. The town had been long noted for its com merce ; and the quays,'and wharfs on both rivers presented a busy scene. The place had then, for more than five hundred years, been the chief seat of the silk trade of France. The clicking sound of the loom was heard in almost every house. Numerous trees had been planted without the city walls, on which silk worms were bred, whose cocoons yielded the means of industry and were the source of wealth to the people.

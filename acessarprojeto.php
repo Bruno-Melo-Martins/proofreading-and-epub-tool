@@ -9,8 +9,10 @@ $acao = 'buscarprojeto';
 require 'php/acoes.php';
 
 //print_r($projeto);
-$project = $projeto[0];
+$projeto = $projeto[0];
 //print_r($project);
+
+$etapa = $projeto['etapa'];
 
 ?>
 <!DOCTYPE html>
@@ -18,78 +20,24 @@ $project = $projeto[0];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?="Etapa $project[etapa]: $project[titulo]"?></title>
+    <title><?="Projeto: $projeto[titulo]"?></title>
     <style>
-        .visualizador span{
-            display: block;
-            font-family: monospace;
-        }
-        .conteudo{
-            white-space: pre-line;
-            font-family: 'EB Garamond';
-            font-size: 14pt;
-            font-variant-ligatures: discretionary-ligatures;
-            width: 50%;
-        }
-        .bfl{
-            float: left;
-            font-size: 24pt;
-            
-        }
     </style>
-    <script>
-        function transformar(){
-            var texto = document.getElementById('contents').innerHTML;
-            var div = document.getElementById('contents');
-            var textarea = document.createElement('textarea');
-            textarea.setAttribute("id", "editando");
-            textarea.setAttribute("style", "width: "+div.offsetWidth+"px; height:"+div.offsetHeight+"px");
-            textarea.setAttribute("class", "conteudo");
-            textarea.setAttribute("onblur", "salvado()");
-            div.replaceWith(textarea);
-            textarea.value = texto;
-        }
-
-        function salvado(){
-            var textarea = document.getElementById('editando');
-            let texto = textarea.value;
-            var div = document.createElement('div');
-            div.setAttribute("id", "contents");
-            div.setAttribute("class", "conteudo");
-            div.setAttribute('ondblclick', 'transformar()');
-            //div.setAttribute("style", "text-align: justify; width: 50%")
-            textarea.replaceWith(div);
-            div.innerHTML = texto;
-        }
-        
-    </script>
-    
 </head>
 <body>
     <?php
-    switch($project['etapa']){
-        case 1:
-            $caminho = "projetos/$project[titulo]/arquivos/$project[titulo].txt";
-            $arquivo = fopen($caminho, 'r');
+    $time = strtotime($projeto['criado']);
+    $data = date("j \of F \of Y",$time);
+    $tarefa = new SoMinha;
+    $datinha = $tarefa->conversordeData($data);
 
-			$soMinha = new SoMinha();
-			$texto = $soMinha->txtparatexto($arquivo);
     ?>
-        <!--<h1 id="titulo"><?=$project['titulo']?></h1>-->
-        <p id="caminho"><?=$caminho?></p>
+    <h1>Bem vindo ao seu projeto: <?=$projeto['titulo']?>!</h1>
+    <p>Seu projeto foi criado em <?=$datinha?></p>
+    <p>Parece que você está na Etapa <?=$etapa?>, <?php if($etapa == 1){?>é hora de analisar o texto bruto e identificar os títulos dentro dele. Cique no link abaixo para começar a trabalhar.<?php }?></p>
 
-        <textarea id="editor" rows="10" cols="50"><?=$texto?></textarea>
-
-        <br>
-        <button onclick="salvarTexto()">Salvar</button>
-        <br>
-        <div class="conteudo" id="contents" ondblclick="transformar()">
-<?=$texto?>
-        </div>
-        
-    <?php
-    break;
-    }
-    ?>
+    <?php if($etapa == 1){?>
+    <a href="etapa1.php?titulo=<?=$titulo?>">BOOOORA TRABAIAR</a>
+    <?php }?>
 </body>
 </html>
