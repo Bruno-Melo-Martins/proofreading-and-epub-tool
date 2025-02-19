@@ -59,9 +59,9 @@ require 'php/acoes.php';
     <form action="php/acoes.php?acao=salvartxtbruto" method="post">
         <input type="text" hidden name="titulo" id="titulo" value="<?=$titulo?>">
         <button type="submit">SALVAÊ</button> 
-        <button type="button" onclick="inserir('<(H1)>')">Título 1</button>
-        <button type="button" onclick="inserir('<(H2)>')">Título 2</button>
-        <button type="button" onclick="inserir('<(H3)>')">Título 3</button>
+        <button type="button" class="bt-title" onclick="inserir('<(H1)>')">Título 1</button>
+        <button type="button" class="bt-title" onclick="inserir('<(H2)>')">Título 2</button>
+        <button type="button" class="bt-title" onclick="inserir('<(H3)>')">Título 3</button>
     </div>
     
     

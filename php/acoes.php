@@ -206,7 +206,36 @@
 
 
 		break;
-	
-	}
 
+		case 'subiretapa':
+			if(isset($_GET['titulo'])){
+				$titulo = $_GET['titulo'];
+			}
+			//echo $titulo;
+
+			// CRIAR PASTA EBOOK
+			$pasta = "../projetos/$titulo/ebook";
+			if(!file_exists($pasta)){
+				mkdir($pasta, 0777);
+			}
+			
+
+			// CRIAR ARQUIVOS XHTML COM BASE NOS TÍTULOS
+			$soMinha = new SoMinha();
+			$soMinha->dividirxhtml($titulo);
+
+
+			// MUDAR CAMPO ETAPA EM TB_PROJETOS
+
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+
+			$tarefa->__set('titulo', $titulo);
+
+			$tarefaService = new TarefaService($conexao, $tarefa);
+			$tarefaService->subirEtapa2();
+			header("Location: ../acessarprojeto.php?titulo=$titulo");
+
+		break;
+	}
 	

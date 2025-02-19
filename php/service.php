@@ -59,6 +59,13 @@ class TarefaService {
 		$stmt->execute();
 	}
 
+	public function subirEtapa2() { //read
+		$query = 'UPDATE tb_projetos SET etapa=2 WHERE titulo = :titulo';
+		$stmt = $this->conexao->prepare($query);
+		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
+		$stmt->execute();
+	}
+
 
 
 }
@@ -132,6 +139,132 @@ class SoMinha {
 		$portugues = array('de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
 		$data = str_replace($ingles, $portugues, $data);
 		return $data;
+	}
+
+	public function dividirxhtml($titulo){
+		$txtpath = "../projetos/$titulo/arquivos/$titulo.txt";
+		$txt = fopen($txtpath, 'r');
+		$linhas = $this->txtparavetor($txt);
+
+		$x=0;
+		$titles = array('<(H1)>', '<(H2)>', '<(H3)>');
+
+		foreach($linhas as $linha){
+			foreach($titles as $title){
+				if(str_contains($linha, $title)){
+					$linha = str_replace($title, '', $linha);
+					$linha = trim($linha);
+					switch($title){
+						case '<(H1)>':
+							$linhas[$x] = "<h1 class='ti-1'>$linha</h1>";
+							break;
+						case '<(H2)>':
+							$linhas[$x] = "<h2 class='ti-2'>$linha</h2>";
+							break;
+						case '<(H3)>':
+							$linhas[$x] = "<h3 class='ti-3'>$linha</h3>";
+							break;
+					}
+				}
+			}
+			$x++;
+		}
+			
+		$paragrafo = '';
+		$pontuacao = array('.', '!', '?');
+		$x = 0;
+		foreach($linhas as $linha){
+			// Se a linha tiver um titulo então ele não será envelopado como parágrafo
+			if(!str_starts_with($linha, '<h')){
+				if($paragrafo == ''){
+					$paragrafo = "<p class='paragrafo'>$linha";
+					$final[$x] = $paragrafo;
+				}else{
+					$paragrafo = " $linha";
+					$final[$x] .= $paragrafo;
+				}
+				foreach($pontuacao as $ponto){
+					if(str_ends_with($paragrafo, $ponto)){
+						$final[$x] .= '</p>';
+						$x++;
+						$paragrafo = '';
+					}
+				}
+			}else{
+				// Porém, se a linha atual é um título, e o paragrafo anterior 'não nulo' não foi fechado ainda, agora ele será fechado
+				//echo $linha;
+				if($paragrafo != ''){
+					$final[$x] .= '</p>';
+					$x++;
+					$paragrafo = '';
+				}
+				
+				$final[$x] = $linha;
+				$x++;
+			}
+			
+		}
+
+		// AGORA FINALMENTE IREMOS ESCREVER NOS
+		$ebpath = "../projetos/$titulo/ebook";
+		$x = 0;
+		// PRIMEIRO HTML
+		$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+		foreach($final as $f){
+			if(str_starts_with($f, '<h2')){
+				$x++;
+				fclose($ebooktxt);	
+				// DEMAIS HTML
+				$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+			}
+			fwrite($ebooktxt, $f.PHP_EOL);
+		}
+		fclose($ebooktxt);
+
+
+		$tocpath = "../projetos/$titulo/arquivos/toc.xhtml";
+		$toc = fopen($tocpath, 'r');
+		$tabela = $this->txtparavetor($toc);
+		$texto = '';
+		foreach($tabela as $linha){
+			$texto .= $linha; 
+		}
+
+		$texto = str_replace('<ol><li>', '', $texto);
+		$texto = str_replace('</li></ol>', '', $texto);
+
+		$linhas = explode('</li><li>', $texto);
+
+		//print_r($linhas);
+
+		$toc = '<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="en">
+  <head>
+    <title>'.$titulo.'</title>
+  </head>
+  <body epub:type="frontmatter">
+  <nav epub:type="toc" role="doc-toc" aria-label="Table of Contents">
+      <ol>';
+	  	
+	 	$x = 0;
+		foreach($linhas as $linha){
+			$toc .= "<li><a href='text_ebook_$x.xhtml'>$linha</a></li>".PHP_EOL;
+			$x++;
+		}
+		$toc .= '
+      </ol>
+    </nav>
+  </body>
+</html>';
+		//echo $toc;
+
+		// CRIAR ARQUIVO TOC NA PASTA EBOOK
+		$tocpath = "../projetos/$titulo/ebook/toc.xhtml";
+		$arquivotoc = fopen($tocpath, 'w');
+		fwrite($arquivotoc, $toc);
+		fclose($arquivotoc);
+		
 	}
 
 }

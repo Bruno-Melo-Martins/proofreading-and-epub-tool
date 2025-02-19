@@ -30,7 +30,7 @@ THE FLIGHT OF THE HUGUENOTS - 110
 THE NUN OF JOUARRE - 126
 THE GUNPOWDER PLOT - 137
 THE FORFEITED CROWN - 153
-STORY OF THE ENGLISH BIBLE - 167
+THE STORY OF THE ENGLISH BIBLE - 167
 
 PREFACE<(H2)>
 
@@ -808,7 +808,7 @@ their hearts to the truth as it is in Jesus.*
 * An original Life of Luther, written by the Rev. Dr. Sears for the American Sunday-school Union, will be found one of the most inter- esting and instructive volumes extant. It is enriched by a large number of beautiful engravings, and the initial letter of each chapter, and indeed all the pictorial embellishments are illustrative of some
 subject connected with the biography. The work was republished by
 the Religious Tract Society of London.
-THE YOUTHFUL MARTYR.
+THE YOUTHFUL MARTYR<(H2)>
 In the days of the young king, Edward the Sixth, a Bible was placed on a desk in every church of the
 land, for the use of the people. A copy in large
 print, bound in wooden boards, with curious iron
@@ -974,7 +974,7 @@ his disciples would have used the sword, and have
 called " down fire from heaven,- he rebuked them.
 How different from his gentle and merciful spirit has
 been the conduct of cruel persecutors in every age !
-THE MAIDEN MARTYR.
+THE MAIDEN MARTYR<(H2)>
 More than two hundred and fifty years have pass- ed since a Spaniard thus wrote of his native land : —"In Spain, many very learned, many very no ble, and many of the highest gentry, have for this
 cause'' (that of the reformed faith) been led forth
 to the scaffold. There is not a city, and, if one may
@@ -1142,7 +1142,7 @@ Who are they, clothed in radiant white, That stand around yon golden throne
 :
 Their garments of celestial light. Pare with a lustre not their own ? These are the saints, who once below Walked in the path their Master trod ; Midst pain, and mockery and woe, And scorching flames, they sought their God. Through His dear might who once was slain, Firm at the burning stake they stood, And washed, from every guilty stain, Their garments in his precious blood. Therefore around the throne they stand, And in his holy temple shine ; Rich in the joy of his right hand, Robed in his righteousness divine. There they can never hunger more, Nor ask the cooling draught in vain ; For He will living waters pour. And heal from every earthly pain. In those blessed realms of endless day. The Lamb shall all their wants supply ; And God's own hand shall wipe away
 The falling tear from every eye.
-THE PROTESTANTS.
+THE PROTESTANTS<(H2)>
 There have been Protestants from the first
 :
 those who have ,protested against the errors of the
@@ -1344,7 +1344,7 @@ faith and practice. Let the young, then, well con sider why they are called Prot
 be earnest to receive into their hearts those great truths which the apostles and reformers preached,
 and through the reception of which alone, by the grace of the Holy Spirit leading them to a true
 faith in Jesus Christ, they can be saved.
-THE TRAGEDY OF ST. BARTHOLOMEW'S DAY.
+THE TRAGEDY OF ST. BARTHOLOMEW'S DAY<(H2)>
 THE LOUVRE,
 In the Sixteenth Century, from an old print. King Charles the Ninth of France, and his chief officers of State, were in solemn debate in the
 council chamber of the old palace of the Louvre. They had met on an affair of death ; the death not 9*
@@ -1523,7 +1523,7 @@ lives, and the peace with which they met the most
 cruel deaths, were led to renounce former errors, and "to inquire after the way of salvation through
 the Lord Jesus Christ.
 10*
-THE niGHT OF THE HUGUENOTS
+THE FLIGHT OF THE HUGUENOTS<(H2)>
 About two hundred and fifty years ago, there was great joy in the dwellings of the Protestants in France. The news had spread over the land that the king had, while in the city of Xantes, sent out
 a decree in favor of the persecuted. They had
 passed many long years of trouble ; their places of worsUp had been broken down ; their ministers sent out of the land, and many of their friends had been
@@ -1784,8 +1784,7 @@ by steam was Savary ; the best maker of telescopes was Dolland ; and the most fa
 the fruits of the toils, losses, and sufferings, the
 skill and the industry of those driven from their native land, for conscience' sake, by the base and
 and cruel act which revoked the Edict of Nantes.
-THE NUN OF JOUARRE.
-\
+THE NUN OF JOUARRE<(H2)>
 JouARRE is a small town in Normandy. It once
 possessed a famous nunnery, which, though long
 since in ruins, is still remembered as the home of
@@ -1956,7 +1955,7 @@ changes ; and now, relying on the merits of Christ, she looked forward to a crow
 not away. At her death there was great mourning
 in the land, and weeping crowds followed her body
 to its grave in the cathedral of Antwerp.
-THE GUNPOWDER PLOT.
+THE GUNPOWDER PLOT<(H2)>
 It was towards the end of the month of October,
 1605, that lord Monteagle arrived at his country house in the village of Hoxton, a mile or two
 beyond the old walls of London. King James had
@@ -2195,7 +2194,7 @@ They say, Who shall see them? They search out iniquities ; They accomplish a dil
 heart, is deep. But God shall shoot at them with an arrow; Suddenly shall they be wounded. So they shall make their own tongue to fall upon them selves ;
 —
 And all men shall fear, and shall declare the work of God." PsA. Ixiv. 5—9.
-THE FORFEITED CROWN.
+THE FORFEITED CROWN<(H2)>
 On the 6th of February, 1685, the heralds pro- claimed before the new palace at Whitehall, that James the Second had succeeded to the crown of England. Coaches, filled with noble ladies, lined the streets. Gentlemen were in groups, on foot or horseback. Flags were hung from house and steeple.
 Guns were fired at the Tower ; the church bells rung merrily, the drums and trumpets sounded,
 while crowds of people shouted forth their loyalty,
@@ -2425,7 +2424,7 @@ people of England—the home of our ancestors
 —
 were thus provided for. May young Protestants know how to value their civil and religious advan tages, and be grateful to God that the country in which their forefathers were born was saved, in the days of James, from the craft of the church of Rome.
 
-THE STORY OF THE ENGLISH BIBLE.
+THE STORY OF THE ENGLISH BIBLE<(H2)>
 The Sabbath sun rises and sets, bringing to our
 hearts and homes unnumbered blessings. The
 gospel is preached to thousands; and hosts of
@@ -2786,6 +2785,16 @@ To every island's distant shore, Mnke known the Saviour's grace and power.
 Seod it to every dungeon's gloom, Send it to every poor man's room ; Nor cease the woe-worn to befriend, Nor cease the heavenly gift to send. 0 Holy Ghost ! who gave the word, With thine own truth thy light aflFord, Give thou the quickening, saving power. On all the earth thy blessings shower.
 Let grace thus turn each wanderer's eye To Him who did for sinners die, And sin and sorrow hence be driven, And earth be chang'd from earth to heaven.
 17
+
+
+
+
+
+
+
+
+
+
 
 
 
