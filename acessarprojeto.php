@@ -47,7 +47,20 @@ $etapa = $projeto['etapa'];
 
     <?php break;
         case 2:?>
-        <p>Parece que você está na Etapa <?=$etapa?>, é hora de analisar o texto bruto e identificar os títulos dentro dele. Cique no link abaixo para começar a trabalhar.</p>
+        <p>Parece que você está na Etapa <?=$etapa?>, é hora de analisar minuciosamente os textos e formatá-los.</p>
+        
+        <?php
+        $toc = explode(' ? ', $projeto['toc']);
+        $x=0;
+        echo '<ol>';
+            foreach($toc as $t){
+                echo '<li>';
+                echo "<a href='etapa2-tipo-$projeto[tipo].php?titulo=$titulo&link=projetos/$titulo/ebook/text_ebook_$x.html'>$t</a>";
+                echo '</li>';
+                $x++;
+            }
+        echo '</ol>';
+        ?>
 
     <?php break;}?>
 

@@ -224,6 +224,14 @@
 			$soMinha = new SoMinha();
 			$soMinha->dividirxhtml($titulo);
 
+			// CRIAR ARQUIVOS XHTML COM BASE NOS TÍTULOS
+			$soMinha = new SoMinha();
+			$soMinha->criartoc($titulo);
+
+			// CRIAR STYLE CSS COM BASE NOS TÍTULOS
+			$soMinha = new SoMinha();
+			$soMinha->criarstyle($titulo);
+
 
 			// MUDAR CAMPO ETAPA EM TB_PROJETOS
 
@@ -237,5 +245,21 @@
 			header("Location: ../acessarprojeto.php?titulo=$titulo");
 
 		break;
-	}
-	
+
+		case 'buscarhtml':
+			$arquivo = fopen("./$htmlpath", 'r');
+
+			$soMinha = new SoMinha();
+			$htmltxt = $soMinha->txtparatexto($arquivo);
+		break;
+
+		case 'salvarhtml':
+			$link = "../$_GET[link]";
+			$texto = $_POST['editando'];
+			$titulo = $_GET['titulo'];
+			echo "$texto";
+			file_put_contents($link, $texto);
+			header("Location: ../acessarprojeto.php?titulo=$titulo");
+
+		break;
+	}	

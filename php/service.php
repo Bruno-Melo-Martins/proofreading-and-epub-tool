@@ -66,6 +66,14 @@ class TarefaService {
 		$stmt->execute();
 	}
 
+	public function inserirtoc(){
+		$query = 'UPDATE tb_projetos SET toc=:toc WHERE titulo = :titulo';
+		$stmt = $this->conexao->prepare($query);
+		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
+		$stmt->bindValue(':toc', $this->tarefa->__get('toc'));
+		$stmt->execute();
+	}
+
 
 
 }
@@ -205,23 +213,26 @@ class SoMinha {
 			
 		}
 
-		// AGORA FINALMENTE IREMOS ESCREVER NOS
+		// AGORA FINALMENTE IREMOS ESCREVER NOS ARQUIVOS
 		$ebpath = "../projetos/$titulo/ebook";
 		$x = 0;
 		// PRIMEIRO HTML
-		$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+		$ebooktxt = fopen("$ebpath/text_ebook_$x.html", 'w');
 		foreach($final as $f){
 			if(str_starts_with($f, '<h2')){
 				$x++;
 				fclose($ebooktxt);	
 				// DEMAIS HTML
-				$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+				$ebooktxt = fopen("$ebpath/text_ebook_$x.html", 'w');
 			}
 			fwrite($ebooktxt, $f.PHP_EOL);
 		}
 		fclose($ebooktxt);
+		
+		
+	}
 
-
+	public function criartoc($titulo){
 		$tocpath = "../projetos/$titulo/arquivos/toc.xhtml";
 		$toc = fopen($tocpath, 'r');
 		$tabela = $this->txtparavetor($toc);
@@ -245,11 +256,11 @@ class SoMinha {
   </head>
   <body epub:type="frontmatter">
   <nav epub:type="toc" role="doc-toc" aria-label="Table of Contents">
-      <ol>';
+      <ol>'.PHP_EOL;
 	  	
 	 	$x = 0;
 		foreach($linhas as $linha){
-			$toc .= "<li><a href='text_ebook_$x.xhtml'>$linha</a></li>".PHP_EOL;
+			$toc .= "<li><a href='text_ebook_$x.html'>$linha</a></li>".PHP_EOL;
 			$x++;
 		}
 		$toc .= '
@@ -264,7 +275,45 @@ class SoMinha {
 		$arquivotoc = fopen($tocpath, 'w');
 		fwrite($arquivotoc, $toc);
 		fclose($arquivotoc);
-		
+
+		// REGISTRAR NO BANCO DE DADOS
+		$x--;
+		$y=0;
+		$toc = '';
+		foreach($linhas as $linha){
+			if($y == $x){
+				$toc .= $linha;
+			}else{
+				$toc .= "$linha ? ";
+			}
+			$y++;
+		}
+
+		$tarefa = new Tarefa();
+		$conexao = new Conexao();
+
+		$tarefa->__set('titulo', $titulo);
+		$tarefa->__set('toc', $toc);
+
+		$tarefaService = new TarefaService($conexao, $tarefa);
+		$tarefaService->inserirtoc();
+
+	}
+
+	public function criarstyle($titulo){
+
+$style = 
+'.paragrafo{
+		text-indent: 1em;
+		text-allign: justify;
+}';
+
+		// CRIAR ARQUIVO TOC NA PASTA EBOOK
+		$stylepath = "../projetos/$titulo/ebook/style.css";
+		$arquivotoc = fopen($stylepath, 'w');
+		fwrite($arquivotoc, $style);
+		fclose($arquivotoc);
+
 	}
 
 }
