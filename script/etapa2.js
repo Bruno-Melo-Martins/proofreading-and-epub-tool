@@ -9,10 +9,17 @@ pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
     console.error("Erro ao carregar o PDF:", error);
 });
 
+if(sessionStorage.getItem("pageNumber") != null){
+    let pagina = sessionStorage.getItem("pageNumber");
+    document.getElementById("page-number").value = pagina;
+}
+
 function renderPage() {
     if (!pdfDoc) return;
     
     let pageNumber = parseInt(document.getElementById("page-number").value);
+    sessionStorage.setItem("pageNumber", pageNumber);
+
     if (pageNumber < 1 || pageNumber > pdfDoc.numPages) {
         alert("Número de página inválido!");
         return;

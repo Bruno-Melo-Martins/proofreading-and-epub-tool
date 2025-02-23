@@ -1,0 +1,92 @@
+body{
+padding-left: 5%;
+padding-right: 5%;
+}
+h1, h2, h3{
+text-align: center;
+}
+.paragrafo{
+text-indent: 1em;
+text-align: justify;
+}
+.p-cent{
+text-align: center;
+}
+.pagina-legenda{
+float: right;
+}
+.numeropagina{
+position: absolute;
+right: 0;
+font-size: 0.7em;
+}
+img{
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 50%;
+}
+.versalete{
+font-variant: small-caps;
+}
+
+.quadro, .quadro td{
+border: 1px solid;
+}
+.quadro{
+width: 90%;
+margin: 0 auto;
+}
+.quadro td{
+padding: 1em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

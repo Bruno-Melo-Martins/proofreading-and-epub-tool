@@ -251,14 +251,25 @@
 
 			$soMinha = new SoMinha();
 			$htmltxt = $soMinha->txtparatexto($arquivo);
+
+			$css = fopen("./projetos/$titulo/ebook/style.css", "r");
+
+			$soMinha = new SoMinha();
+			$csstxt = $soMinha->txtparatexto($css);
+
 		break;
 
 		case 'salvarhtml':
 			$link = "../$_GET[link]";
-			$texto = $_POST['editando'];
+			$texto = $_POST['textohtml'];
+			$textocss = $_POST['editorcss'];
 			$titulo = $_GET['titulo'];
-			echo "$texto";
+			$css = "../projetos/$titulo/ebook/style.css";
+
+			echo "$texto <br> $textocss";
 			file_put_contents($link, $texto);
+			file_put_contents($css, $textocss);
+
 			header("Location: ../acessarprojeto.php?titulo=$titulo");
 
 		break;

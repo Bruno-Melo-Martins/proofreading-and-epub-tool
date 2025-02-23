@@ -18,25 +18,27 @@ require 'php/acoes.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etapa 1: <?=$titulo?></title>
     <style>
-        body{
+        body {
             padding: 0;
             margin: 0;
         }
+        .conteudo {
+            display: flex;
+        }
         .esquerda{
             width: 48.45vw;
-            height: 95vh;
-            float: left;
+            height: 95vh;  
+            overflow:scroll;  
         }
         .direita{
             width: 50vw;
-            min-height: 95vh;
-            float: right;
+            height: 95vh;
             position: sticky;
             top: 5vh;
-            right: 0;
-            background-color: silver;
+            background-color: blanchedalmond;
             border: 2px solid dimgray;
         }
+
         iframe{
             width: 100%;
             height: 80vh;
@@ -62,37 +64,41 @@ require 'php/acoes.php';
             width: 100%;
             height: 90vh;
         }
+        .visualizador{
+            <?=$csstxt?>
+        }
     </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
-
-
 </head>
 <body>
     <p class="header"><a href="acessarprojeto.php?titulo=<?=$titulo?>"><-Voltar</a></p>
+    
+    <div class="conteudo">
 
-    <div class="esquerda">
-        <!--<iframe src="projetos/<?=$titulo?>/arquivos/<?=$titulo?>.pdf" frameborder="100"></iframe>-->
-        <p id="linkdolivro" hidden>projetos/<?=$titulo?>/arquivos/<?=$titulo?>.pdf</p>
-        <label for="page-number">Página:</label>
-        <input type="number" id="page-number" value="1" min="1">
-        <button type="button" onclick="renderPage()">Carregar Página</button> <br>
+        <div class="esquerda">
+            <p id="linkdolivro" hidden>projetos/<?=$titulo?>/arquivos/<?=$titulo?>.pdf</p>
+            <label for="page-number">Página:</label>
+            <input type="number" id="page-number" value="1" min="1">
+            <button type="button" onclick="renderPage()">Carregar Página</button> <br>
 
-        <canvas id="pdf-canvas"></canvas>
-    </div>
-    </form>
-    <div class="direita">
+            <canvas id="pdf-canvas"></canvas>
+        </div>
+        
         <form action="php/acoes.php?acao=salvarhtml&link=<?=$htmlpath?>&titulo=<?=$titulo?>" method="post">
-        <button type="submit" disabled id="salva">Salvar</button>
-        <button type="button" onclick="visualizarDiv(1)" id="visualizar">Visualizar</button>
-        <button type="button" onchange="readaptar(this)" onclick="visualizarDiv(2)" id="editar">Editar</button>
-        <button type="button" onchange="readaptar(this)" onclick="visualizarDiv(3)" id="estilos">Estilos</button><br>
+        <div class="direita">
+            <button type="submit" id="salva">Salvar</button>
+            <button type="button" onclick="visualizarDiv(1)" id="visualizar">Visualizar</button>
+            <button type="button" onclick="visualizarDiv(2)" id="editar">Editar</button>
+            <button type="button" onclick="visualizarDiv(3)" id="estilos">Estilos</button><br>
 
-        <iframe src="<?=$htmlpath?>" frameborder="0" id="conteudo"></iframe>
-        <textarea class="editor" name="textohtml" id="editorhtml" hidden><?=$htmltxt?></textarea>
-        <textarea class="editor" name="editorcss" id="editorcss" hidden></textarea>
+            <iframe class="visualizador" src="<?=$htmlpath?>" frameborder="0" id="conteudo"></iframe>
+            <textarea spellCheck="false" class="editor" name="textohtml" id="editorhtml" hidden><?=$htmltxt?></textarea>
+            <textarea spellCheck="false" class="editor" name="editorcss" id="editorcss" hidden><?=$csstxt?></textarea>
+        </div>
         </form>
+    
     </div>
 
     <script type="text/javascript" src="script/etapa2.js"></script>
