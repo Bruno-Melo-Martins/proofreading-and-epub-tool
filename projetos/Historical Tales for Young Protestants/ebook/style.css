@@ -9,6 +9,9 @@ text-align: center;
 text-indent: 1em;
 text-align: justify;
 }
+.paragrafo-c{
+text-align: justify;
+}
 .p-cent{
 text-align: center;
 }
@@ -20,11 +23,11 @@ position: absolute;
 right: 0;
 font-size: 0.7em;
 }
-img{
+.center-img{
 display: block;
 margin-left: auto;
 margin-right: auto;
-width: 50%;
+size: 50%;
 }
 .versalete{
 font-variant: small-caps;
@@ -40,41 +43,13 @@ margin: 0 auto;
 .quadro td{
 padding: 1em;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.chapter-letter{
+float: left;
+height: 15em
+}
+hr{
+width: 50%;
+}
 
 
 

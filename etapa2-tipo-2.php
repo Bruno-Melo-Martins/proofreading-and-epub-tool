@@ -35,7 +35,6 @@ require 'php/acoes.php';
             height: 95vh;
             position: sticky;
             top: 5vh;
-            background-color: blanchedalmond;
             border: 2px solid dimgray;
         }
 

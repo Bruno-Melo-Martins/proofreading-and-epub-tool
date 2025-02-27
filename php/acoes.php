@@ -266,7 +266,7 @@
 			$titulo = $_GET['titulo'];
 			$css = "../projetos/$titulo/ebook/style.css";
 
-			echo "$texto <br> $textocss";
+			//echo "$texto <br> $textocss";
 			file_put_contents($link, $texto);
 			file_put_contents($css, $textocss);
 
