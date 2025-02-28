@@ -2,7 +2,7 @@
 
 
 //CRUD
-class TarefaService {
+class BancoDados {
 
 	private $conexao;
 	private $tarefa;
@@ -13,26 +13,23 @@ class TarefaService {
 	}
 
 
-	public function verificartabela(){
-		$query = 
-				"SELECT COUNT(*) 
-				FROM tb_projetos 
-				WHERE titulo = :titulo ";
+	public function verificarTitulos(){
+		$query = "SELECT COUNT(*) FROM tb_projetos WHERE titulo = :titulo ";
 
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-		//return $stmt->fetchAll(PDO::FETCH_OBJ);
 	}
 
-	public function inserirprojetonovo() { //create
-		$query = 'INSERT INTO tb_projetos(titulo, autor, tipo) 
-		VALUES(:titulo, :autor, :tipo)';
+	public function inserirprojeto() { //create
+		$query = 'INSERT INTO tb_projetos (titulo, autor, tipo, idioma, forma) VALUES(:titulo, :autor, :tipo, :idioma, :forma)';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->bindValue(':autor', $this->tarefa->__get('autor'));
 		$stmt->bindValue(':tipo', $this->tarefa->__get('tipo'));
+		$stmt->bindValue(':idioma', $this->tarefa->__get('idioma'));
+		$stmt->bindValue(':forma', $this->tarefa->__get('forma'));
 		$stmt->execute();
 	}
 
@@ -79,21 +76,34 @@ class TarefaService {
 }
 
 class SoMinha {
-	public function verificarelementos($files){
-		// Verificar os POST is FILE kjaljfgl
-		if(count($files) != 0){
-			foreach($files as $file){
-				if(isset($file)){
-					$resultado = "Os arquivos existem";
-					
-				}else{
-					echo 'não é arquivo <br>';
-					
-					return 'Erro: Arquivo faltando';
-				}
-				return $resultado;
+
+	public function criarPastas($pastas){
+		foreach($pastas as $pasta){
+			if(!file_exists($pasta)){
+				mkdir($pasta, 0777);
 			}
 		}
+	}
+	public function verificarElementos($elements, $files){
+		foreach($elements as $elemento){
+			if(isset($elemento) && $elemento != ''){
+				$existe = true;
+			}else{
+				return false;
+			}
+		}
+		if(count($files) != 0){
+			foreach($files as $file){
+				if(!is_file("$_FILES[$file][tmp_name]")){
+					return false;
+				}else{
+					if(!str_contains("$_FILES[$file][tmp_name]", ".$file")){
+						return false;
+					}
+				}
+			}
+		}
+		return $existe;
 	}
 
 	public function txtparatexto($arquivo){

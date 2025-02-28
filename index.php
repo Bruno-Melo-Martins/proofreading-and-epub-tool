@@ -1,7 +1,6 @@
 <?php
 $acao = 'buscarlista';
-
-require 'php/acoes.php';
+require "php/acoes.php";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,15 +9,20 @@ require 'php/acoes.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página inicial</title>
     <style>
-        form input{
+        form input, form select{
             display:block;
+        }
+        .duvida{
+            border-radius: 100%;
+            background-color: black;
+            color: white;
         }
     </style>
 
     <script>
         //Código para habilitar o input file do pdf
         function habilitarpdf(){
-            var tagpdf = document.getElementById("pedefe");
+            var tagpdf = document.getElementById("pdf");
             var tagatt = tagpdf.getAttributeNames();
 
             if(tagatt.includes("disabled")){
@@ -38,20 +42,29 @@ require 'php/acoes.php';
 <body>
     <fieldset>
         <legend>Novo projeto</legend>
-        <form action="php/acoes.php?acao=criarnovoprojeto" method="post" enctype="multipart/form-data">
+        <form action="php/acoes.php?acao=criarprojeto" method="post" enctype="multipart/form-data">
             <label for="titulo">Título da obra:</label>
             <input type="text" name="titulo" id="titulo" required />
             
             <label for="autor">Nome do autor:</label>
             <input type="text" name="autor" id="autor" required />
 
+            <label for="idioma">Idioma (abreviação):</label>
+            <input type="text" name="idioma" id="idioma" required />
+
+            <label for="idioma">Forma do texto: <details><summary>Para quê?</summary>Caso o texto seja formatado em parágrafos, iremos formatá-los automaticamente assim, caso o texto seja em verso, não alteraremos sua formatação.</details></label>
+            <select name="forma" id="forma" required >
+                <option value="prosa">Prosa</option>
+                <option value="poesia">Poesia</option>
+            </select>
+
             <label for="fonte">Fonte da obra em .txt:</label>
-            <input type="file" name="fonte" accept=".txt" id="fonte" required />
+            <input type="file" name="txt" accept=".txt" id="txt" required />
 
             <label for="tipo">O projeto usará o texto-fonte em .pdf?</label>
             <input type="checkbox" name="tipo" id="tipo" onclick="habilitarpdf()">
 
-            <input type="file" name="pedefe" accept=".pdf" id="pedefe" disabled>
+            <input type="file" name="pdf" accept=".pdf" id="pdf" disabled>
 
             <button type="submit">Criar</button>
         </form>
@@ -63,13 +76,17 @@ require 'php/acoes.php';
         if(isset($lista)){
             foreach($lista as $projetos){
         ?>
-            <a href="acessarprojeto.php?titulo=<?=$projetos['titulo']?>"><div>
+            <a href="projeto.php?titulo=<?=$projetos['titulo']?>"><div>
                 <p>Projeto: <?=$projetos['titulo']?></p>
                 <p>Criado em: <?=$projetos['criado']?></p>    
             </div></a>
         <?php
             }}
         ?>
+        <a href="projeto.php?titulo=?>"><div>
+                <p>Projeto: </p>
+                <p>Criado em: </p>    
+            </div></a>
     </fieldset>
 
     <fieldset>
