@@ -23,13 +23,14 @@ class BancoDados {
 	}
 
 	public function inserirprojeto() { //create
-		$query = 'INSERT INTO tb_projetos (titulo, autor, tipo, idioma, forma) VALUES(:titulo, :autor, :tipo, :idioma, :forma)';
+		$query = 'INSERT INTO tb_projetos (titulo, autor, tipo, idioma, forma, metadados) VALUES(:titulo, :autor, :tipo, :idioma, :forma, :metadados)';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->bindValue(':autor', $this->tarefa->__get('autor'));
 		$stmt->bindValue(':tipo', $this->tarefa->__get('tipo'));
 		$stmt->bindValue(':idioma', $this->tarefa->__get('idioma'));
 		$stmt->bindValue(':forma', $this->tarefa->__get('forma'));
+		$stmt->bindValue(':metadados', $this->tarefa->__get('metadados'));
 		$stmt->execute();
 	}
 
@@ -84,9 +85,9 @@ class SoMinha {
 			}
 		}
 	}
-	public function verificarElementos($elements, $files){
-		foreach($elements as $elemento){
-			if(isset($elemento) && $elemento != ''){
+	/*public function verificarElementos($elementos, $files){ NÃO FUNCIONOU
+		foreach($elementos as $elemento){
+			if(isset($_POST[$elemento]) && $_POST[$elemento] != ''){
 				$existe = true;
 			}else{
 				return false;
@@ -104,7 +105,7 @@ class SoMinha {
 			}
 		}
 		return $existe;
-	}
+	}*/
 
 	public function txtparatexto($arquivo){
 		// Declarar string
@@ -153,8 +154,8 @@ class SoMinha {
 	}
 
 	public function conversordeData($data){
-		$ingles = array('of', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-		$portugues = array('de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+		$ingles = ['of', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		$portugues = ['de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 		$data = str_replace($ingles, $portugues, $data);
 		return $data;
 	}

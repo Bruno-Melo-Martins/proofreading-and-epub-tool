@@ -77,16 +77,11 @@ require "php/acoes.php";
             foreach($lista as $projetos){
         ?>
             <a href="projeto.php?titulo=<?=$projetos['titulo']?>"><div>
-                <p>Projeto: <?=$projetos['titulo']?></p>
-                <p>Criado em: <?=$projetos['criado']?></p>    
+                <p>Projeto: <?=$projetos['titulo']?>. Criado em: <?=$projetos['criado']?></p>
             </div></a>
         <?php
             }}
         ?>
-        <a href="projeto.php?titulo=?>"><div>
-                <p>Projeto: </p>
-                <p>Criado em: </p>    
-            </div></a>
     </fieldset>
 
     <fieldset>

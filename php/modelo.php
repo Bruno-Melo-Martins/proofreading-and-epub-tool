@@ -1,6 +1,8 @@
 <?php
 class Tarefa{
 
+    private $titulo;
+
     public function __get($atributo){
         return $this-> $atributo;
     }
