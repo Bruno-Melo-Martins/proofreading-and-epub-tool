@@ -14,6 +14,8 @@ if(isset($_GET['acao'])){
 
 if(isset($_POST['titulo'])){
 	$titulo = $_POST['titulo'];
+}elseif(isset($_GET['titulo'])){
+	$titulo = $_GET['titulo'];
 }
 
 if(isset($_SERVER['HTTP_REFERER'])){
@@ -126,6 +128,51 @@ switch($acao){
 			$tarefaService = new BancoDados($conexao, $tarefa);
 			$projeto = $tarefaService->buscarprojeto()[0];
 		break;
+		/* CONECTADO EM PÁGINA PROJETO.PHP */
+		case 'alterarmetadados':
+			$VoltarAPaginaAnterior = true;
+			// Checar cada um dos possíveis metadados
+			$y = 0;
+			$a = false;
+			while($a == false){
+				if(isset($_POST["excluir-$y"])){
+					$y++;
+					echo "não";
+				}else{
+					if(!isset($_POST["meta-$y"]) && $_POST["meta-$y"] == ''){
+						$a = true;
+					}else{
+						$meta[$_POST["meta-$y"]] = $_POST["valor-$y"];
+						$y++;
+					}
+					}
+				}
+			
+
+			if(isset($_POST['check-n']) && $_POST['meta-n'] != '' && $_POST['valor-n'] != ''){
+				$meta[$_POST["meta-n"]] = $_POST["valor-n"];
+			}
+
+			$metadados = serialize($meta);
+
+			// Adicionar novo vetor serializado na tabela
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefa->__set('metadados', $metadados);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$tarefaService->inserirmetadados();
+
+		break;
+		/* CONECTADO COM ETAPA-1.PHP */
+		case 'buscartxt':
+			$caminho = "./projetos/$titulo/arquivos/$titulo.txt";
+			$txt = fopen($caminho, "r");
+			$soMinha = new SoMinha();
+			$texto = $soMinha->txtparatexto($txt);
+			session_start();
+			$_SESSION['texto'] = [$titulo, $texto];
+			break;
 }
 
 if($VoltarAPaginaAnterior == true){

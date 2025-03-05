@@ -72,6 +72,14 @@ class BancoDados {
 		$stmt->execute();
 	}
 
+	public function inserirmetadados(){
+		$query = 'UPDATE tb_projetos SET metadados=:metadados WHERE titulo = :titulo';
+		$stmt = $this->conexao->prepare($query);
+		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
+		$stmt->bindValue(':metadados', $this->tarefa->__get('metadados'));
+		$stmt->execute();
+	}
+
 
 
 }
@@ -85,6 +93,7 @@ class SoMinha {
 			}
 		}
 	}
+
 	/*public function verificarElementos($elementos, $files){ NÃO FUNCIONOU
 		foreach($elementos as $elemento){
 			if(isset($_POST[$elemento]) && $_POST[$elemento] != ''){
@@ -114,8 +123,8 @@ class SoMinha {
 			$line = fgets($arquivo);
 			$line = trim($line);
 			$fonte .= $line. PHP_EOL;
-
 		}
+		fclose($arquivo);
 		return $fonte;
 	}
 

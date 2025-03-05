@@ -9,7 +9,6 @@ require "php/acoes.php";
 print_r($projeto);
 $data = date("j/m/Y",strtotime($projeto['criado']));
 $metadados = unserialize($projeto['metadados']);
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,6 +16,21 @@ $metadados = unserialize($projeto['metadados']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seu projeto: <?=$titulo?></title>
+    <script>
+        function NovoMetadado(botao){
+            var span = document.getElementById("n-meta");
+            var checkN =document.getElementById("check-n");
+            if(span.hasAttribute("hidden")){
+                span.removeAttribute("hidden", "");
+                botao.innerHTML = "Excluir novo Metadado";
+                checkN.checked = true;
+            }else{
+                span.setAttribute("hidden", "");
+                botao.innerHTML = "Novo Metadado";
+                checkN.checked = false;
+            }
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -24,42 +38,46 @@ $metadados = unserialize($projeto['metadados']);
     </header>
     <p>Data de criação: <?=$data?></p>
     <p>Etapa: <?=$projeto['etapa']?></p>
+    <?php
+    switch($projeto['etapa']){
+        case 1:
+    ?>
+        <a href="etapa-1.php?titulo=<?=$titulo?>">Editar</a>
+    <?php
+        break;
+    }
+    ?>
 
     <fieldset>
-        <legend>Alterar metadados</legend>
-        <form action="php/acoes.php?acao=inserirmetadados" method="post" id="form">
+        <legend>Alterar Metadados</legend>
+        <form action="php/acoes.php?acao=alterarmetadados&titulo=<?=$titulo?>" method="post">
             <?php
+            $metadados = unserialize($projeto['metadados']);
             $x = 0;
-            foreach(array_keys($metadados) as $metadado){
-                
+            foreach($metadados as $metadado => $valor){
             ?>
-            <span id="metadado-<?=$x?>">
-                <input type="text" name="mt-nm-<?=$x?>" id="mt-nm-<?=$x?>" value="<?=$metadado?>">
-                <label>:</label>
-                <input type="text" name="mt-ct-<?=$x?>" id="mt-ct-<?=$x?>" value="<?=$metadados[$metadado]?>"> <button type="button">Excluir</button>
-            </span> <br>
+            <span>
+                <input type="text" name="meta-<?=$x?>" required value="<?=$metadado?>">
+                <input type="text" name="valor-<?=$x?>" required value="<?=$valor?>">
+                <label for="excluir-<?=$x?>">Excluir</label>
+                <input type="checkbox" name="excluir-<?=$x?>" id="excluir-<?=$x?>">
+            </span>
+            <br>
             <?php
-                if(isset($listaMeta)){
-                    $listaMeta .= ";metadado-$x";
-                }else{
-                    $listaMeta = "metadado-$x";
-                }
-                $x++;
+            $x++;
             }
             ?>
-            <input type="text" name="lista" id="lista" hidden value="<?=$listaMeta?>">
-            <span id="metadado-<?=$x?>">
-                <input type="text" name="mt-nm-<?=$x?>" id="mt-nm-<?=$x?>" placeholder="novo">
-                <label>:</label>
-                <input type="text" name="mt-ct-<?=$x?>" id="mt-ct-<?=$x?>" placeholder="metadado"> 
-            </span> <br>
+            
+            <span id="n-meta" hidden >
+                <input type="text" name="meta-n" placeholder="Ex.: language">
+                <input type="text" name="valor-n" placeholder="Ex.: English">
+            </span>
+
+            <button type="button" onclick="NovoMetadado(this)" value="maoi">Novo metadado</button>
+            <input type="checkbox" name="check-n" id="check-n" hidden value="novo">
+
+            <br>
             <button type="submit">Alterar</button>
-        </form>
-    </fieldset>
-    <fieldset>
-        <legend>Adicionar imagens</legend>
-        <form action="php/inseririmagens" method="post" enctype="multipart/form-data">
-            <input type="file" name="imagem" id="imagem" accept="image/*">
         </form>
     </fieldset>
 
