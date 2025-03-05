@@ -81,6 +81,13 @@ $metadados = unserialize($projeto['metadados']);
         </form>
     </fieldset>
 
-    
+        <!--<fieldset>
+        <legend>Imagens do projeto</legend>
+        <form action="php/acoes.php?acao=alterarimagens&titulo=<?=$titulo?>" method="post" enctype="multipart/form-data">
+            <input type="file" accept="image/*" name="img" id="img">
+            <input type="text" name="" id="">
+            <button type="submit">Alterar</button>
+        </form>
+    </fieldset>-->
 </body>
 </html>

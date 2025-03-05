@@ -159,19 +159,62 @@ switch($acao){
 			$tarefa = new Tarefa();
 			$conexao = new Conexao();
 			$tarefa->__set('titulo', $titulo);
-			$tarefa->__set('metadados', $metadados);
+			$tarefa->__set('valor', $metadados);
 			$tarefaService = new BancoDados($conexao, $tarefa);
-			$tarefaService->inserirmetadados();
+			$tarefaService->inserirMeta();
 
 		break;
 		/* CONECTADO COM ETAPA-1.PHP */
 		case 'buscartxt':
+			// Pegar texto
 			$caminho = "./projetos/$titulo/arquivos/$titulo.txt";
 			$txt = fopen($caminho, "r");
 			$soMinha = new SoMinha();
 			$texto = $soMinha->txtparatexto($txt);
-			session_start();
-			$_SESSION['texto'] = [$titulo, $texto];
+
+			// Pegar toc do BD
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$projeto = $tarefaService->buscarprojeto()[0];
+
+			// Criar lista como o toc
+			if($projeto['toc'] != ''){
+				$titles = unserialize($projeto['toc']);
+				$soMinha = new SoMinha();
+				$lista = $soMinha->tocParaLista($titles);
+			}
+
+			break;
+		case 'salvartxt':	
+			$VoltarAPaginaAnterior = true;
+			$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
+			$txt = $_POST['editor'];
+
+			$txtvet = explode("\n", $txt);
+			
+			foreach($txtvet as $linha){
+				for($x = 1; $x <= 6; $x++){
+					if(str_contains($linha, "<h$x>") && str_contains($linha, "</h$x>")){
+						$title = str_replace("<h$x>", "", $linha);
+						$title = trim(str_replace("</h$x>", "", $title));
+						$titles[] = ["H" => $x, "C" => $title];
+					}
+				}	
+			}
+			
+
+			file_put_contents($caminho, $txt);
+
+			$toc = serialize($titles);
+
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefa->__set('valor', $toc);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$tarefaService->inserirToc();
 			break;
 }
 

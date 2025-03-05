@@ -9,21 +9,15 @@ Gift of
 Miss Eunice Barrows
 
 
-
-
-
-
 Young Luther and Ursula Cotta. p. 47.
 
-HISTORICAL TALES
-FOR
-YOUNG PROTESTANTS.
+<h1>HISTORICAL TALES FOR YOUNG PROTESTANTS.</h1>
 
 PHILADELPHIA
 AMERICAN SUNDAY-SCHOOL UNION,
 No. 1122 CHESTNUT STREET
 
-CONTENTS.
+<h2>CONTENTS.</h2>
 
 THE MERCHANT OP LYONS - 9
 THE GOOD PARSON OF LUTTERWORTH - 21
@@ -39,7 +33,7 @@ THE GUNPOWDER PLOT - 137
 THE FORFEITED CROWN - 153
 STORY OF THE ENGLISH BIBLE - 167
 
-PREFACE.
+<h2>PREFACE.</h2>
 
 Fact is as attractive as fiction, and is of much higher moral value. The pages of history contain incidents which equal in thrilling interest the most successful
 efforts of the human imagination. From its ample records, the following short stories, connected with the rise and pro gress of Scriptural Protestantism, have been selected. If it has been found necessary to advert to the dark deeds of the papacy, it is from the conviction that the principles and spirit in which they originated in former ages are not extinct in the present day. In supplying
@@ -54,10 +48,10 @@ THE MERCHANT OF LYONS,
 ABOUT seven hundred years ago, there lived at Lyons, in France, a wealthy merchant named Peter Waldo. His house was on a tongue of land which divides the two beautiful rivers—the Rhone and the Saone. The walls of the city, even at that period, were old and grey. It was by gloomy gateways that the traveller entered into close, narrow streets. Houses six or seven stories high, were ornamented with richly carved work in wood ; and
 [10]
 their over-hanging roofs almost touched at the projecting parts, casting deep shadows on the pathway below. The town had been long noted for its com merce ; and the quays,'and wharfs on both rivers presented a busy scene. The place had then, for more than five hundred years, been the chief seat of the silk trade of France. The clicking sound of the loom was heard in almost every house. Numerous trees had been planted without the city walls, on which silk worms were bred, whose cocoons yielded the means of industry and were the source of wealth to the people.
-Peter Waldo had lived in great reputation as a merchant. Success had attended his labors, and he was known among his fellow-citizens as a man of honor, liberality and kindness of spirit. In the midst of his prosperity, an event took place, which led him to feel anxious for the salvation of his soul. He was sitting in the company of some friends. After supper, as they were engaged in pleasant con versation, one of them fell to the ground, and when he was raised it was found that he was dead ! From that time Waldo became a diligent inquirer after truth. He looked around, and saw the people carried away by sin, and then seeking to satisfy a guilty conscience with the false doctrines and vain ceremonies of the church of Rome. But in these peace was not to be found. The priests could not satisfy his mind as to the great question, How 
+Peter Waldo had lived in great reputation as a merchant. Success had attended his labors, and he was known among his fellow-citizens as a man of honor, liberality and kindness of spirit. In the midst of his prosperity, an event took place, which led him to feel anxious for the salvation of his soul. He was sitting in the company of some friends. After supper, as they were engaged in pleasant con versation, one of them fell to the ground, and when he was raised it was found that he was dead ! From that time Waldo became a diligent inquirer after truth. He looked around, and saw the people carried away by sin, and then seeking to satisfy a guilty conscience with the false doctrines and vain ceremonies of the church of Rome. But in these peace was not to be found. The priests could not satisfy his mind as to the great question, How
 [11]
-shall man be just with God He knew he was a sinner; his conscience told him so. He knew he was not fit to die; and when he asked, "What must I do to be saved he was not satisfied with all the answers the priests of the church of Rome gave him. The Bible would have told him ; but Waldo had not the holy book. Rich as he was, he had not that best of all treasures : the few copies which then existed were in libraries to which the common people had not access. Besides, they were all written in Latin, so that a person had to be learn- ed in that tongue in order to read a Bible, provided he could by any means get sight of one. 
-Some books of piety soon afterwards fell into the hands of Peter Waldo, written by the " early fa- thers," as they are called—pious men, who lived after the apostles, and before the Christian religion was corrupted by the priests of Rome. In these books he found many passages from the New Testa- ment, and much that brought light and comfort to his soul. These parts only made him more anxious to secure the whole of the Bible. 
+shall man be just with God He knew he was a sinner; his conscience told him so. He knew he was not fit to die; and when he asked, "What must I do to be saved he was not satisfied with all the answers the priests of the church of Rome gave him. The Bible would have told him ; but Waldo had not the holy book. Rich as he was, he had not that best of all treasures : the few copies which then existed were in libraries to which the common people had not access. Besides, they were all written in Latin, so that a person had to be learn- ed in that tongue in order to read a Bible, provided he could by any means get sight of one.
+Some books of piety soon afterwards fell into the hands of Peter Waldo, written by the " early fa- thers," as they are called—pious men, who lived after the apostles, and before the Christian religion was corrupted by the priests of Rome. In these books he found many passages from the New Testa- ment, and much that brought light and comfort to his soul. These parts only made him more anxious to secure the whole of the Bible.
 After much labor, Peter Waldo was so happy as to own a copy of God's word. It must have been a large sum of money that he gave for it; yet what a treasure it proved to him ! He did not think the money misspent or the time misapplied that he gave to the study of it. These were nothing, in comparison with the blessed truths which it made
 [12]
 known to him. It taught him the "new and living
@@ -2793,6 +2787,11 @@ To every island's distant shore, Mnke known the Saviour's grace and power.
 Seod it to every dungeon's gloom, Send it to every poor man's room ; Nor cease the woe-worn to befriend, Nor cease the heavenly gift to send. 0 Holy Ghost ! who gave the word, With thine own truth thy light aflFord, Give thou the quickening, saving power. On all the earth thy blessings shower.
 Let grace thus turn each wanderer's eye To Him who did for sinners die, And sin and sorrow hence be driven, And earth be chang'd from earth to heaven.
 17
+
+
+
+
+
 
 
 

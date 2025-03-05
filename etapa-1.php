@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if(isset($_GET['titulo'])){
     $titulo = $_GET['titulo'];
@@ -8,12 +7,10 @@ if(isset($_GET['titulo'])){
 }
 $pagina = $_SERVER['HTTP_REFERER'];
 
-if(isset($_SESSION['texto']) && $titulo == $_SESSION['texto'][0]){
-    $texto = $_SESSION['texto'][1];
-}else{
-    $acao = 'buscartxt';
-    require 'php/acoes.php';
-}
+
+$acao = 'buscartxt';
+require 'php/acoes.php';
+
 
 
 ?>
@@ -70,9 +67,8 @@ if(isset($_SESSION['texto']) && $titulo == $_SESSION['texto'][0]){
     </details>
 
     <div class="barra">
-    <form action="php/acoes.php?acao=salvartxtbruto" method="post">
-        <input type="text" hidden name="titulo" id="titulo" value="<?=$titulo?>">
-        <button type="submit">SALVAÊ</button> 
+    <form action="php/acoes.php?acao=salvartxt&titulo=<?=$titulo?>" method="post">
+        <button type="submit">Salvar</button> 
         <button type="button" class="bt-1" onclick="inserirTag('h1', this)">Título 1</button>
         <button type="button" class="bt-1" onclick="inserirTag('h2', this)">Título 2</button>
         <button type="button" class="bt-1" onclick="inserirTag('h3', this)">Título 3</button>
@@ -87,7 +83,7 @@ if(isset($_SESSION['texto']) && $titulo == $_SESSION['texto'][0]){
     </form>
     <div class="direita">
         <h2>Aqui estão os títulos do seu arquivo</h2>
-        <?php if(isset($toc)){echo $toc;}?>
+        <?php if(isset($lista)){echo $lista;}?>
         
     </div>
     <div class="clear"></div>

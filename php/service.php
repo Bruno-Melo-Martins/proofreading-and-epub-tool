@@ -64,19 +64,19 @@ class BancoDados {
 		$stmt->execute();
 	}
 
-	public function inserirtoc(){
-		$query = 'UPDATE tb_projetos SET toc=:toc WHERE titulo = :titulo';
+	public function inserirMeta(){
+		$query = 'UPDATE tb_projetos SET metadados=:valor WHERE titulo = :titulo';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
-		$stmt->bindValue(':toc', $this->tarefa->__get('toc'));
+		$stmt->bindValue(':valor', $this->tarefa->__get('valor'));
 		$stmt->execute();
 	}
 
-	public function inserirmetadados(){
-		$query = 'UPDATE tb_projetos SET metadados=:metadados WHERE titulo = :titulo';
+	public function inserirToc(){
+		$query = 'UPDATE tb_projetos SET toc=:valor WHERE titulo = :titulo';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
-		$stmt->bindValue(':metadados', $this->tarefa->__get('metadados'));
+		$stmt->bindValue(':valor', $this->tarefa->__get('valor'));
 		$stmt->execute();
 	}
 
@@ -160,6 +160,38 @@ class SoMinha {
 		}
 		
 		return rmdir($folderPath); // Deleta a pasta vazia
+	}
+
+	function tocParaLista($titles){
+		// Numero de </ol> finais para adicionar, 1 por default
+		$z=1;
+		$lista = "<ol>\n";
+		$ultimo = 0;
+
+		foreach($titles as $vetor){
+			$h = (int)$vetor['H'];
+			$title = $vetor['C'];
+
+			if($ultimo == 0){
+				$ultimo = $h;
+
+			}elseif($h > $ultimo){
+				$ultimo = $h;
+				$lista .= "<ol>\n";
+				$z++;
+
+			}elseif($h < $ultimo){
+				$ultimo = $h;
+				$lista .= "<ol>\n";
+				$z--;
+			}
+
+			$lista .= "	<li>$title</li>\n";
+		}
+		for($n = 1; $n <= $z; $n++){
+			$lista .= "</ol>\n";
+		}
+		return $lista;
 	}
 
 	public function conversordeData($data){
