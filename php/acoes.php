@@ -221,6 +221,26 @@ switch($acao){
 			$tarefaService = new BancoDados($conexao, $tarefa);
 			$tarefaService->inserirToc();
 			break;
+		case 'salvarimagens':
+			$VoltarAPaginaAnterior = true;
+			$image = $_FILES['imagem']['name'];
+			$extension = pathinfo($image, PATHINFO_EXTENSION);
+			
+			if(isset($_POST['nome']) && $_POST['nome'] != ''){
+				$nome = "$_POST[nome].$extension";
+			}else{
+				$nome = pathinfo($image, PATHINFO_BASENAME);	
+			}
+
+			$caminho = "../projetos/$titulo/ebook/images/$nome";
+			move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho);
+		break;
+
+		case 'excluirimagens':
+			$VoltarAPaginaAnterior = true;
+			$caminho = "../projetos/$titulo/ebook/images/$_POST[nome]";
+			unlink($caminho);
+			break;
 }
 
 if($VoltarAPaginaAnterior == true){

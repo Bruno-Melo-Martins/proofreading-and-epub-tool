@@ -24,6 +24,7 @@ $metadados = unserialize($projeto['metadados']);
 
         table.imagens{
             width: 50vw;
+            float: left;
         }
 
         table.imagens tr{
@@ -68,6 +69,16 @@ $metadados = unserialize($projeto['metadados']);
             padding: 2em;
         }
 
+        .form-imgs{
+            float: right;
+            width: 40%;
+        }
+
+        img.miniatura{
+            max-width: 2em;
+            max-height: 2em;
+        }
+
     </style>
     <script>
         function NovoMetadado(botao){
@@ -103,6 +114,25 @@ $metadados = unserialize($projeto['metadados']);
             vignetta.setAttribute("hidden", "");
 
             document.body.style.overflow = "scroll";
+        }
+        function VisualizarIMG(acao){
+            var salvar = document.getElementById("salvarimgs");
+            var excluir = document.getElementById("excluirimgs");
+            if(acao == 1){
+                if(salvar.hasAttribute("hidden")){
+                    salvar.removeAttribute("hidden");
+                }
+                if(!excluir.hasAttribute("hidden")){
+                    excluir.setAttribute("hidden", "");
+                }
+            }else{
+                if(excluir.hasAttribute("hidden")){
+                    excluir.removeAttribute("hidden");
+                }
+                if(!salvar.hasAttribute("hidden")){
+                    salvar.setAttribute("hidden", "");
+                }
+            }
         }
     </script>
 </head>
@@ -157,7 +187,6 @@ $metadados = unserialize($projeto['metadados']);
 
     <fieldset>
         <legend>Imagens do projeto</legend>
-        <form action="php/acoes.php?acao=alterarimagens&titulo=<?=$titulo?>" method="post" enctype="multipart/form-data">
             <table class="imagens">
                 <tbody>
                     <?php
@@ -175,8 +204,45 @@ $metadados = unserialize($projeto['metadados']);
                     ?>
                 </tbody>
             </table>
-        </form>
+
+            <fieldset class="form-imgs">
+                <legend><button onclick="VisualizarIMG(1)">Enviar imagem</button><button onclick="VisualizarIMG(2)">Excluir imagem</button></legend>
+                <div id="salvarimgs">
+                    <form action="php/acoes.php?acao=salvarimagens&titulo=<?=$titulo?>" method="post" enctype="multipart/form-data">
+                        <input type="file" name="imagem" id="imagem" accept="image/*">
+                        <label for="nome-imagem">Nome para a imagem</label>
+                        <input type="text" name="nome" id="nome">
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
+
+                <div hidden id="excluirimgs">
+                    <form action="php/acoes.php?acao=excluirimagens&titulo=<?=$titulo?>" method="post">
+                        <select name="nome" id="nome" onchange="mudarMiniatura(this)">
+                        <?php
+                            foreach($images as $image){
+                            ?>
+                                <option value="<?=$image?>">
+                                    <?=$image?>
+                                </option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                        <button onclick="return confirm('Tem certeza que quer excluir?');" type="submit">Excluir</button>
+                        <img src="<?="projetos/$titulo/ebook/images/$images[0]"?>" class="miniatura" id="miniatura">
+                        
+                    </form>
+                </div>
+            </fieldset>
     </fieldset>
+
+    <script>
+        function mudarMiniatura(select){
+            var miniatura = document.getElementById("miniatura");
+        miniatura.setAttribute("src", '<?="projetos/$titulo/ebook/images/"?>'+select.value);
+        }
+    </script>
 
     <div hidden class="vignetta" id="vignetta">
         <div class="content" id="ad">
