@@ -187,6 +187,7 @@ class SoMinha {
 			}
 
 			$lista .= "	<li>$title</li>\n";
+			
 		}
 		for($n = 1; $n <= $z; $n++){
 			$lista .= "</ol>\n";

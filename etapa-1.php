@@ -5,7 +5,7 @@ if(isset($_GET['titulo'])){
 }else{
     header('Location: index.php');
 }
-$pagina = $_SERVER['HTTP_REFERER'];
+$pagina = "projeto.php?titulo=$titulo";
 
 
 $acao = 'buscartxt';

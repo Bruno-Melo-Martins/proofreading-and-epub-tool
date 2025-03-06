@@ -127,6 +127,11 @@ switch($acao){
 			$tarefa->__set('titulo', $titulo);
 			$tarefaService = new BancoDados($conexao, $tarefa);
 			$projeto = $tarefaService->buscarprojeto()[0];
+
+			$caminho = "./projetos/$titulo/ebook/images";
+
+			$images = array_diff(scandir($caminho, 1), ['.', '..']);
+			
 		break;
 		/* CONECTADO EM PÁGINA PROJETO.PHP */
 		case 'alterarmetadados':
