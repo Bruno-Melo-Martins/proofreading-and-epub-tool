@@ -72,6 +72,7 @@ require 'php/acoes.php';
         <button type="button" class="bt-1" onclick="inserirTag('h1', this)">Título 1</button>
         <button type="button" class="bt-1" onclick="inserirTag('h2', this)">Título 2</button>
         <button type="button" class="bt-1" onclick="inserirTag('h3', this)">Título 3</button>
+        <a onclick="return confirm('Tem certeza que quer voltar ao texto original?');" href="php/acoes.php?acao=restaurarbackup&titulo=<?=$titulo?>">Restaurar Backup</a>
     </div>
     
     

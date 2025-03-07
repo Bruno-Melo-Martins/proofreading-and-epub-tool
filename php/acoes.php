@@ -240,7 +240,27 @@ switch($acao){
 			$VoltarAPaginaAnterior = true;
 			$caminho = "../projetos/$titulo/ebook/images/$_POST[nome]";
 			unlink($caminho);
-			break;
+		break;
+		case 'restaurarbackup':
+			$VoltarAPaginaAnterior = true;
+			$backup = "../projetos/$titulo/backup/$titulo.txt";
+			$arquivo = "../projetos/$titulo/arquivos/$titulo.txt";
+
+			// Pegar texto do backup
+			$txt = fopen($backup, "r");
+			$soMinha = new SoMinha();
+			$texto = $soMinha->txtparatexto($txt);
+
+			// Substituir texto e apagar toc
+			file_put_contents($arquivo, $texto);
+
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefa->__set('valor', '');
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$tarefaService->inserirToc();
+		break;
 }
 
 if($VoltarAPaginaAnterior == true){
