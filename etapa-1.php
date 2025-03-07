@@ -87,7 +87,6 @@ require 'php/acoes.php';
         <?php if(isset($lista)){echo $lista;}?>
         
     </div>
-    <div class="clear"></div>
 
     <script type="text/javascript" src="script/etapa1.js"></script>
 

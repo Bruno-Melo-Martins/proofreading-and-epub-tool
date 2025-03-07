@@ -187,8 +187,10 @@ switch($acao){
 			// Criar lista como o toc
 			if($projeto['toc'] != ''){
 				$titles = unserialize($projeto['toc']);
+				// Lista sem links de navegação
+				$links = false;
 				$soMinha = new SoMinha();
-				$lista = $soMinha->tocParaLista($titles);
+				$lista = $soMinha->tocParaLista($titles, $links);
 			}
 
 			break;
@@ -221,6 +223,7 @@ switch($acao){
 			$tarefaService = new BancoDados($conexao, $tarefa);
 			$tarefaService->inserirToc();
 			break;
+		/* CONECTADO COM PROJETO.PHP */
 		case 'salvarimagens':
 			$VoltarAPaginaAnterior = true;
 			$image = $_FILES['imagem']['name'];
@@ -261,6 +264,57 @@ switch($acao){
 			$tarefaService = new BancoDados($conexao, $tarefa);
 			$tarefaService->inserirToc();
 		break;
+		/* MUDAR ETAPA DE 1 PARA 2 */
+		case 'subiretapa':
+			// Buscar projeto
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$projeto = $tarefaService->buscarprojeto()[0];
+			
+			// Declarar variáveis
+			$etapa = (int)$projeto['etapa'];
+			$tipo = (int)$projeto['tipo'];
+			$forma = $projeto['forma'];
+			$toc = $projeto['toc'];
+			$idioma = $projeto['idioma'];
+			$metadados = $projeto['metadados'];
+			if($etapa != 1){
+				break;
+			}
+			// Pegar o texto
+			/*$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
+			$txt = fopen($caminho, "r");
+			$soMinha = new SoMinha();
+			$texto = $soMinha->txtparatexto($txt);*/
+
+			// Dividir xhtml
+			$soMinha = new SoMinha();
+			$soMinha->dividirxhtml($titulo, $forma, $idioma);
+
+			// Criar style.css
+			$txtstyle = "body{\n	margin: 0;\n	padding: 0 10%;\n}\n.titulo{\n	text-align: center;\n}\n.paragrafo{\n	text-indent: 1em;\n	text-align: justify;\n}\n.paragrafo_capitular{\n	text-indent: 0;\n	text-align: justify;\n}\n.numero_pagina{\n	position: absolute;\n	left: 94%;\n	font-size: 0.7em;\n	text-indent: 0;\n}\n.imagem_centro{\n	display: block;\n	margin-left: auto;\n	margin-right: auto;\n}\n.versalete{\n	font-variant: small-caps;\n}\n.capitular1{\n	float: left;\n	height: 20em;\n}\n.clear{\n	clear: both;\n}";
+			$caminho = "../projetos/$titulo/ebook/style.css";
+			$style = fopen($caminho, "w");
+			fwrite($style, $txtstyle);
+			fclose($style);
+
+			// Criar nav.xhtml (toc)
+			$soMinha = new SoMinha();
+			$soMinha->criartoc($titulo, $toc);
+
+			// Subir etapa no Banco de dados
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$tarefaService->subiretapa();
+
+			header("Location: ../projeto.php?titulo=$titulo");
+
+		break;
+		
 }
 
 if($VoltarAPaginaAnterior == true){

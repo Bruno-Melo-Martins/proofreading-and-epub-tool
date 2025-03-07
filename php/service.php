@@ -57,7 +57,7 @@ class BancoDados {
 		$stmt->execute();
 	}
 
-	public function subirEtapa2() { //read
+	public function subiretapa() { //read
 		$query = 'UPDATE tb_projetos SET etapa=2 WHERE titulo = :titulo';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
@@ -162,210 +162,204 @@ class SoMinha {
 		return rmdir($folderPath); // Deleta a pasta vazia
 	}
 
-	function tocParaLista($titles){
-		// Numero de </ol> finais para adicionar, 1 por default
-		$z=1;
-		$lista = "<ol>\n";
-		$ultimo = 0;
+	public function tocParaLista($titles, $links){
+		// z é o Numero de </ol> finais para adicionar, 1 por default
+		$z = 1; // Contador de ol abertos
+		$lista = "<ol>\n"; 
+		$ultimo = 0; 
+		$y = 0;
 
-		foreach($titles as $vetor){
-			$h = (int)$vetor['H'];
+		foreach ($titles as $vetor) {
+			$h = (int) $vetor['H']; 
 			$title = $vetor['C'];
 
-			if($ultimo == 0){
+			if ($ultimo == 0) {
 				$ultimo = $h;
-
-			}elseif($h > $ultimo){
-				$ultimo = $h;
-				$lista .= "<ol>\n";
+			} elseif ($h > $ultimo) { 
+				// Abrir novo nível de lista
+				// Para obedecer o XHTML restrito
+				if($links){
+					$lista = substr($lista, 0, -6);
+					$lista .= "\n<ol>\n"; 
+				}else{
+					$lista .= "<ol>\n"; 
+				}
 				$z++;
-
-			}elseif($h < $ultimo){
-				$ultimo = $h;
-				$lista .= "<ol>\n";
-				$z--;
+			} elseif ($h < $ultimo) { 
+				// Fechar listas até alcançar o nível correto
+				while ($h < $ultimo) {
+					if($links){
+						$lista .= "</ol></li>\n"; 
+					}else{
+						$lista .= "</ol>\n";
+					}	
+					$z--;
+					$ultimo--;
+				}
 			}
 
-			$lista .= "	<li>$title</li>\n";
+			// Adicionar item da lista
+			if ($links) {
+				$lista .= "<li><a href=\"text_ebook_$y.xhtml\">$title</a></li>\n";
+				$y++;
+			} else {
+				$lista .= "<li>$title</li>\n";
+			}
+
+			$ultimo = $h;
+		}
+
+		// Fechar quaisquer listas abertas no final
+		while ($z > 1) {
+			if($links){
+				$lista .= "</ol></li>\n";
+			}else{
+				$lista .= "</ol>\n";
+			}
 			
+			$z--;
 		}
-		for($n = 1; $n <= $z; $n++){
-			$lista .= "</ol>\n";
-		}
+
+		$lista .= "</ol>\n";
 		return $lista;
 	}
 
-	public function conversordeData($data){
+	/*public function conversordeData($data){
 		$ingles = ['of', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		$portugues = ['de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 		$data = str_replace($ingles, $portugues, $data);
 		return $data;
-	}
+	}*/
 
-	public function dividirxhtml($titulo){
+	public function dividirxhtml($titulo, $forma, $idioma){
 		$txtpath = "../projetos/$titulo/arquivos/$titulo.txt";
 		$txt = fopen($txtpath, 'r');
 		$linhas = $this->txtparavetor($txt);
 
-		$x=0;
-		$titles = array('<(H1)>', '<(H2)>', '<(H3)>');
+		$x = 0;
+		// Para o id de cada tag título
+		$z = 0;
 
 		foreach($linhas as $linha){
-			foreach($titles as $title){
-				if(str_contains($linha, $title)){
-					$linha = str_replace($title, '', $linha);
+			for($y = 1; $y <= 6; $y++){
+				if(str_contains($linha, "<h$y>")){
+					// Colocar class nos títulos
+					$linha = str_replace("<h$y>", "<h$y class=\"titulo titulo$y\" id=\"ti$z\">", $linha);
+					$z++;
 					$linha = trim($linha);
-					switch($title){
-						case '<(H1)>':
-							$linhas[$x] = "<h1 class='ti-1'>$linha</h1>";
-							break;
-						case '<(H2)>':
-							$linhas[$x] = "<h2 class='ti-2'>$linha</h2>";
-							break;
-						case '<(H3)>':
-							$linhas[$x] = "<h3 class='ti-3'>$linha</h3>";
-							break;
-					}
+					$linhas[$x] = $linha;
+
+					// Conseguir o título separado
+					$paciencia = strpos($linha, ">") + 1;
+					$virtude = substr($linha, $paciencia);
+					$capitulos[] = str_replace("</h$y>", "", $virtude);
 				}
 			}
 			$x++;
 		}
-			
-		$paragrafo = '';
-		$pontuacao = array('.', '!', '?');
-		$x = 0;
-		foreach($linhas as $linha){
-			// Se a linha tiver um titulo então ele não será envelopado como parágrafo
-			if(!str_starts_with($linha, '<h')){
-				if($paragrafo == ''){
-					$paragrafo = "<p class='paragrafo'>$linha";
-					$final[$x] = $paragrafo;
-				}else{
-					$paragrafo = " $linha";
-					$final[$x] .= $paragrafo;
-				}
-				foreach($pontuacao as $ponto){
-					if(str_ends_with($paragrafo, $ponto)){
-						$final[$x] .= '</p>';
+		
+		// Conforme a forma
+		switch($forma){
+			case 'prosa':
+				$paragrafo = '';
+				$pontuacao = ['.', '!', '?'];
+				$x = 0;
+				foreach($linhas as $linha){
+					// Se a linha tiver um titulo então ele não será envelopado como parágrafo
+					if(!str_starts_with($linha, '<h')){
+						if($paragrafo == ''){
+							$paragrafo = "<p class=\"paragrafo\">$linha";
+							$final[$x] = $paragrafo;
+						}else{
+							$paragrafo = " $linha";
+							$final[$x] .= $paragrafo;
+						}
+						foreach($pontuacao as $ponto){
+							if(str_ends_with($paragrafo, $ponto)){
+								$final[$x] .= '</p>';
+								$x++;
+								$paragrafo = '';
+							}
+						}
+					}else{
+						// Porém, se a linha atual é um título, e o paragrafo anterior 'não nulo' não foi fechado ainda, agora ele será fechado
+						//echo $linha;
+						if($paragrafo != ''){
+							$final[$x] .= '</p>';
+							$x++;
+							$paragrafo = '';
+						}
+						
+						$final[$x] = $linha;
 						$x++;
-						$paragrafo = '';
 					}
 				}
-			}else{
-				// Porém, se a linha atual é um título, e o paragrafo anterior 'não nulo' não foi fechado ainda, agora ele será fechado
-				//echo $linha;
-				if($paragrafo != ''){
-					$final[$x] .= '</p>';
-					$x++;
-					$paragrafo = '';
-				}
-				
-				$final[$x] = $linha;
-				$x++;
-			}
-			
+				break;
+				case 'poesia':
+					$x = 0;
+					foreach($linhas as $linha){
+						if(!str_starts_with($linha, '<h') && $linha != ''){
+							$final[$x] = "<p class=\"verso\">$linha</p>";
+						}else{
+							// Se for título adicione-o normalmente
+							$final[$x] = $linha;
+						}
+						$x++;
+					}
+					break;
 		}
 
+		/*foreach($final as $f){
+			echo $f;
+		}*/
+		
 		// AGORA FINALMENTE IREMOS ESCREVER NOS ARQUIVOS
 		$ebpath = "../projetos/$titulo/ebook";
 		$x = 0;
+		// Header e final de todos os arquivos em xhtml
+		$header = "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"$idioma\" lang=\"$idioma\">\n<head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"dc:title\" content=\"$titulo\" />\n    <title>placeholder</title>\n	<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" />\n</head>\n<body>\n";
+
+		$end = "\n</body>\n</html>";
 		// PRIMEIRO HTML
-		$ebooktxt = fopen("$ebpath/text_ebook_$x.html", 'w');
+		$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+		$head = str_replace("placeholder", $capitulos[$x], $header);
+		fwrite($ebooktxt, $head);
 		foreach($final as $f){
 			if(str_starts_with($f, '<h2')){
+
 				$x++;
+				fwrite($ebooktxt, $end);
 				fclose($ebooktxt);	
 				// DEMAIS HTML
-				$ebooktxt = fopen("$ebpath/text_ebook_$x.html", 'w');
+				$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+				$head = str_replace("placeholder", $capitulos[$x], $header);
+				fwrite($ebooktxt, $head);
 			}
 			fwrite($ebooktxt, $f.PHP_EOL);
 		}
+
 		fclose($ebooktxt);
 		
 		
 	}
 
-	public function criartoc($titulo){
-		$tocpath = "../projetos/$titulo/arquivos/toc.xhtml";
-		$toc = fopen($tocpath, 'r');
-		$tabela = $this->txtparavetor($toc);
-		$texto = '';
-		foreach($tabela as $linha){
-			$texto .= $linha; 
+	public function criartoc($titulo, $toc){
+		// Criar lista como o toc
+		if($toc != ''){
+			$titles = unserialize($toc);
+			$links = true;
+			$lista = $this->tocParaLista($titles, $links);
+
+			$header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" >\n  <head><title>Índice</title></head>\n  <body>\n    <nav epub:type=\"toc\">\n";
+			$end = "	</nav>\n  </body>\n</html>";
+
+			$navtexto = "$header$lista$end";
+
+			$caminho = "../projetos/$titulo/ebook/nav.xhtml";
+			$nav = fopen($caminho, "w");
+			fwrite($nav, $navtexto);
+			fclose($nav);
 		}
-
-		$texto = str_replace('<ol><li>', '', $texto);
-		$texto = str_replace('</li></ol>', '', $texto);
-
-		$linhas = explode('</li><li>', $texto);
-
-		//print_r($linhas);
-
-		$toc = '<?xml version="1.0" encoding="UTF-8"?>
-
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="en">
-  <head>
-    <title>'.$titulo.'</title>
-  </head>
-  <body epub:type="frontmatter">
-  <nav epub:type="toc" role="doc-toc" aria-label="Table of Contents">
-      <ol>'.PHP_EOL;
-	  	
-	 	$x = 0;
-		foreach($linhas as $linha){
-			$toc .= "<li><a href='text_ebook_$x.html'>$linha</a></li>".PHP_EOL;
-			$x++;
-		}
-		$toc .= '
-      </ol>
-    </nav>
-  </body>
-</html>';
-		//echo $toc;
-
-		// CRIAR ARQUIVO TOC NA PASTA EBOOK
-		$tocpath = "../projetos/$titulo/ebook/toc.xhtml";
-		$arquivotoc = fopen($tocpath, 'w');
-		fwrite($arquivotoc, $toc);
-		fclose($arquivotoc);
-
-		// REGISTRAR NO BANCO DE DADOS
-		$x--;
-		$y=0;
-		$toc = '';
-		foreach($linhas as $linha){
-			if($y == $x){
-				$toc .= $linha;
-			}else{
-				$toc .= "$linha ? ";
-			}
-			$y++;
-		}
-
-		$tarefa = new Tarefa();
-		$conexao = new Conexao();
-
-		$tarefa->__set('titulo', $titulo);
-		$tarefa->__set('toc', $toc);
-
-		$tarefaService = new TarefaService($conexao, $tarefa);
-		$tarefaService->inserirtoc();
-
-	}
-
-	public function criarstyle($titulo){
-
-$style = 
-'.paragrafo{
-		text-indent: 1em;
-		text-allign: justify;
-}';
-
-		// CRIAR ARQUIVO TOC NA PASTA EBOOK
-		$stylepath = "../projetos/$titulo/ebook/style.css";
-		$arquivotoc = fopen($stylepath, 'w');
-		fwrite($arquivotoc, $style);
-		fclose($arquivotoc);
 
 	}
 
