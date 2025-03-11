@@ -65,6 +65,7 @@ Qu'en voſtre cœur il plante la Foy viue
 
 Seigneur DIEV crée en moy cueur net. [Pſeau 50.]
 
+<div class="canto">
 OV eſt l'Enfer remply entierement
 De tout malheur, trauail, pein, & tourment ?
 Ou eſt le puitz de malediction,
@@ -1553,10 +1554,11 @@ SEVL DIEV puiſſant, & incomprehenſible,
 Soit tout honneur, gloire, louengɇ, amour
 A tout iamais, es ſiecles ſans ſeiour.
 FIN.
-|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|—|
+</div>
 [59]
 <h2>Diſcord eſtant en l'homme par la contrarieté de l'Eſprit & de la Chair, & paix par vie ſpirituelle.</h2>
 
+<div class="canto">
 NOble d'Eſprit, & ſerf fuis de nature,
 Extrait du ciel, & vile geniture,
 Siege de Dieu, vaiſſeau d'iniquité,
@@ -1717,9 +1719,11 @@ Au moins vain crons ayans ceſte defenſe,
 Encor q̃ nous avons fait maintɇ offenſe,
 Puis qu'â peché, ne nous ſommes dõnez.
 FIN.
+</div>
 [65]
-<h2>Oraiſon de laME FIDELE, A SON SEIGNEVR DIEV.</h2>
+<h2>❧ Oraiſon de laME FIDELE, A SON SEIGNEVR DIEV.</h2>
 *
+<div class="canto">
 SEigneur, duquel le ſiege, ſont les Cieux :
 Le marchepied, la terrɇ, & ces baslieux :
 Qui en tes bras encloz le firmament,
@@ -3276,9 +3280,11 @@ Qu'il vienne dõc abbreger mes longs iours.
 Car luy TOVT SEVL en eſt la medecine :
 Làs, vien, IESVS, car ie lãguiz d'amours.
 FIN.
+</div>
 [121]
 <h2>ORAISON A NOSTRE SEIGNEVR IESVS CHRIST.</h2>
 *
+<div class="canto">
 MON Createur, qui auez congnoiſſance
 Deuant l'heure de mon eſtre, & naiſſance,
 Que ce ſeroit, que c'eſt, & que doit eſtre :
@@ -3606,7 +3612,7 @@ Par Charité, qui tout peché pardonne.
 En ceſte Foy ferme & ſeure me tais :
 Et pour penſer, vle parler i'abandonne.
 FIN.
-
+</div>
 
 
 

@@ -399,6 +399,35 @@ class SoMinha {
 		fclose($htmlz);
 	}
 
+	public function criarMetadataOPF($cover, $titulo, $idioma, $metadados, $autor){
+		$metadata = fopen("../projetos/$titulo/htmlz/metadata.opf", "w");
+		$texto = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<package xmlns=\"http://www.idpf.org/2007/opf\" version=\"3.0\" unique-identifier=\"book-id\">
+\t<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\">
+\t\t<dc:identifier id=\"book-id\">urn:uuid:12345678-1234-1234-1234-123456789abc</dc:identifier>
+\t\t<dc:title>$titulo</dc:title>
+\t\t<dc:language>$idioma</dc:language>
+\t\t<dc:creator>$autor</dc:creator>\n";
+		// Adicionar metadados do usuário;
+		foreach($metadados as $name => $content){
+			$texto .= "\t\t<dc:$name>$content</dc:$name>\n";
+		}
+		// Fechar metadata e abrir manifest
+		$texto .= "\t</metadata>\n\t<manifest>\n";
+		// Adicionar index.html e fechar manifest:
+			$texto .= "\t\t<item id=\"index\" href=\"index.html\" media-type=\"application/html\"/>\n\t</manifest>\n";
+		// Adicionar cover.jpg ao guide
+		if($cover){
+			$texto .= "\t<guide>\n\t\t<reference type=\"cover\" title=\"cover\" href=\"cover.jpg\"/>\n\t</guide>";
+		}
+		// Adicionar index.html ao spine e fechar documento:
+		$texto .= "\t\n\t<spine>\n\t\t<itemref idref=\"index\" href=\"index.html\" media-type=\"application/html\" />\n\t</spine>\n</package>";
+
+		
+		fwrite($metadata, $texto);
+		fclose($metadata);
+	}
+
 
 
 }

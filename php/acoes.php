@@ -357,6 +357,7 @@ switch($acao){
 			$toc = unserialize($projeto['toc']);
 			$idioma = $projeto['idioma'];
 			$metadados = unserialize($projeto['metadados']);
+			$autor = $projeto['autor'];
 
 			$pastas = ["../projetos/$titulo/htmlz"];
 			$soMinha = new SoMinha();
@@ -385,12 +386,21 @@ switch($acao){
 				}
 			}
 
+			$tempagina = false;
+
 			foreach($images as $image){
-				copy("$caminho$image", "../projetos/$titulo/htmlz/$image");
+				copy("$caminho/$image", "../projetos/$titulo/htmlz/$image");
+				if(pathinfo("$caminho/$image", PATHINFO_FILENAME) == "cover"){
+					$tempagina = true;
+				}
 			}
 
 			$caminho = "../projetos/$titulo/ebook/style.css";
 			copy($caminho, "../projetos/$titulo/htmlz/style.css");
+
+			$soMinha = new SoMinha();
+			$soMinha->criarMetadataOPF($tempagina,$titulo, $idioma, $metadados, $autor);
+
 
 		break;
 }

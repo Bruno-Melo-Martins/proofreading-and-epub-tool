@@ -202,6 +202,7 @@ $metadados = unserialize($projeto['metadados']);
                     <form action="php/acoes.php?acao=excluirimagens&titulo=<?=$titulo?>" method="post">
                         <select name="nome" id="nome" onchange="mudarMiniatura(this)">
                         <?php
+                            if(isset($images)){
                             foreach($images as $image){
                             ?>
                                 <option value="<?=$image?>">
@@ -209,10 +210,11 @@ $metadados = unserialize($projeto['metadados']);
                                 </option>
                             <?php
                             }
+                            }
                             ?>
                         </select>
                         <button onclick="return confirm('Tem certeza que quer excluir?');" type="submit">Excluir</button>
-                        <img src="<?="projetos/$titulo/ebook/images/$images[0]"?>" class="miniatura" id="miniatura">
+                        <img src="<?php if (isset($images)) { echo "projetos/$titulo/ebook/$images[0]"; }?>" class="miniatura" id="miniatura">
                         
                     </form>
                 </div>
