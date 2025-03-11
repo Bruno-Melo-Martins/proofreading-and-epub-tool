@@ -121,8 +121,9 @@ class SoMinha {
 		$fonte = '';
 		while (!feof($arquivo)) {
 			$line = fgets($arquivo);
-			$line = trim($line);
-			$fonte .= $line. PHP_EOL;
+			$line = preg_replace("/^[ ]+|[ ]+$/m", "", $line); // Remove espaços no início e fim de cada linha, mas mantém tabs
+
+			$fonte .= $line;
 		}
 		fclose($arquivo);
 		return $fonte;
@@ -363,6 +364,42 @@ class SoMinha {
 
 	}
 
+	public function criarHtmlz($textos, $titulo, $idioma){
+		$htmlz = fopen("../projetos/$titulo/htmlz/index.html", "w");
+		
+		fwrite($htmlz, "<!DOCTYPE html>\n<html lang=\"$idioma\">\n<head>\n    <meta charset=\"UTF-8\">\n	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>$titulo</title>\n	<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>\n</head>\n<body>\n");
+		foreach($textos as $x){
+			$body = false;
+			$caminho = "../projetos/$titulo/ebook/text_ebook_$x.xhtml";
+			$txt = fopen($caminho, 'r');
+			$linhas = $this->txtparavetor($txt);
+			foreach($linhas as $linha){
+				if(str_contains($linha, "<body>")){
+					$body = true;
+				}
+
+				if(str_contains($linha, "</body>")){
+					$body = false;
+				}
+
+				if(str_contains($linha, "src=\"images/")){
+					$linha = str_replace("src=\"images/", "src=\"", $linha);
+				}
+
+				if($body && !str_contains($linha, "<body>") && !str_contains($linha, "</body>")){
+					fwrite($htmlz, "$linha\n");
+				}
+			}
+			$x++;
+		}
+		fwrite($htmlz, "\n  </body>\n</html>");
+		fclose($htmlz);
+	}
+
+
+
 }
+
+
 
 ?>

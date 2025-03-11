@@ -25,7 +25,11 @@ function inserirTag(titulo, botao) {
         if(botao.classList.contains("bt-2")){
             botao.classList.remove("bt-2");
             botao.classList.add("bt-1");
-            editor.value = (x.slice(0, curPos)+ "</" + titulo + ">" + x.slice(curPos));
+            if(titulo.includes("div")){
+                editor.value = (x.slice(0, curPos)+ "</div>" + x.slice(curPos));    
+            }else{
+                editor.value = (x.slice(0, curPos)+ "</" + titulo + ">" + x.slice(curPos));    
+            }
             editor.selectionStart = curPos;
             editor.selectionEnd = curPos + 4;
         }

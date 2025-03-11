@@ -7,7 +7,7 @@ PAR PIERRE DE TOVRS
 [2]
 <h2>AUX DAMES DES VERTUS, DE LA TRESILLUSTRE ET TRESVERtueſe Princeſſe Marguerite de France, Royne de Navarre devotement affectionées.</h2>
 M. S C.
-
+<div class="canto">
 Bien que ie ſois la plus clere d'icy,
 —Ie ne reluis penetramment qu'en l'eau :
 —Ou du bas Mondɇvn seul Royal cerveau
@@ -22,9 +22,10 @@ Cecy chantant Dyanɇ entre les Dieux,
 —Parquoy ayant, Dames, deuant voz yeux
 —Ces rayz treſſaintz de ſi haultɇ efficace,
 —En les louant noſtrɇ honneur louerez.
+</div>
 [3]
 <h2>MARGUERITE DE FRANCE, PAR LA GRACE DE DIEU ROINE de Navarre au lecteur.</h2>
-
+<div class="canto">
 SI vous liſez ceſtɇ œuure toutɇ entiere,
 Arreſtez vous, ſans plus, à la matiere :
 En excuſant la rhythmɇ, & le langage,
@@ -59,6 +60,7 @@ Et n'en prenez ſeulement, que le bien.
 Mais priez Dieu plein de bonté naïue,
 Qu'en voſtre cœur il plante la Foy viue
 [5]
+</div>
 <h2>LE MIROIR DE L'AME PECHERESSE.</h2>
 
 Seigneur DIEV crée en moy cueur net. [Pſeau 50.]
@@ -3604,6 +3606,9 @@ Par Charité, qui tout peché pardonne.
 En ceſte Foy ferme & ſeure me tais :
 Et pour penſer, vle parler i'abandonne.
 FIN.
+
+
+
 
 
 

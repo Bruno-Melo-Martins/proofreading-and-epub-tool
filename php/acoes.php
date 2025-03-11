@@ -128,8 +128,8 @@ switch($acao){
 			$tarefaService = new BancoDados($conexao, $tarefa);
 			$projeto = $tarefaService->buscarprojeto()[0];
 
+			// Buscar imagens
 			$caminho = "./projetos/$titulo/ebook/images";
-
 			$images = array_diff(scandir($caminho, 1), ['.', '..']);
 			
 		break;
@@ -314,8 +314,69 @@ switch($acao){
 			header("Location: ../projeto.php?titulo=$titulo");
 
 		break;
-		
+		/* CONECTADO COM ETAPA-2.PHP */
+		case 'buscarhtml':
+			$caminho = "./projetos/$titulo/ebook/$htmlfile";
+			$arquivo = fopen($caminho, 'r');
+			$soMinha = new SoMinha();
+			$html = $soMinha->txtparatexto($arquivo);
+
+			$cssfile = fopen("./projetos/$titulo/ebook/style.css", "r");
+
+			$soMinha = new SoMinha();
+			$css = $soMinha->txtparatexto($cssfile);
+		break;
+		case 'salvarhtml':
+			$VoltarAPaginaAnterior = true;
+			$link = "../$_GET[link]";
+			$texto = $_POST['textohtml'];
+			$textocss = $_POST['textocss'];
+			$css = "../projetos/$titulo/ebook/style.css";
+
+			//echo "$texto <br> $textocss";
+			file_put_contents($link, $texto);
+			file_put_contents($css, $textocss);
+
+		break;
+		case 'criarhtmlz':
+			$VoltarAPaginaAnterior = true;
+			// Buscar projeto
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$projeto = $tarefaService->buscarprojeto()[0];
+			$toc = unserialize($projeto['toc']);
+			$idioma = $projeto['idioma'];
+
+			$pastas = ["../projetos/$titulo/htmlz"];
+			$soMinha = new SoMinha();
+			$soMinha->criarPastas($pastas);
+
+			$x = 0;
+			foreach($toc as $title){
+				if(isset($_POST["text$x"]) && $_POST["text$x"] == 'on'){
+					$textos[] = $x;
+				}
+				$x++;
+			}
+
+			$soMinha = new SoMinha();
+			$soMinha->criarHtmlz($textos, $titulo, $idioma);
+
+			// Buscar imagens
+			$caminho = "../projetos/$titulo/ebook/images/";
+			$images = array_diff(scandir($caminho, 1), ['.', '..']);
+			foreach($images as $image){
+				copy("$caminho$image", "../projetos/$titulo/htmlz/$image");
+			}
+
+			$caminho = "../projetos/$titulo/ebook/style.css";
+			copy($caminho, "../projetos/$titulo/htmlz/style.css");
+
+		break;
 }
+
 
 if($VoltarAPaginaAnterior == true){
 	if(isset($erro)){

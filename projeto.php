@@ -92,9 +92,42 @@ $metadados = unserialize($projeto['metadados']);
     switch($projeto['etapa']){
         case 1:
     ?>
-        <a href="etapa-1.php?titulo=<?=$titulo?>">Editar</a>
+        <a href="etapa-1.php?titulo=<?=$titulo?>&forma=<?=$projeto['forma']?>">Editar</a>
         <a onclick="return confirm('Tem certeza que quer subir a Etapa?');" href="php/acoes.php?acao=subiretapa&titulo=<?=$titulo?>">Subir Etapa</a>
     <?php
+        break;
+        case 2:
+            $toc = unserialize($projeto['toc']);
+            echo '<ol>';
+            $numero = 0;
+            foreach($toc as $xhtml){
+                $conteudo = $xhtml['C'];
+    ?>
+            <li><a href="etapa-2.php?titulo=<?=$titulo?>&html=text_ebook_<?=$numero?>.xhtml"><?=$conteudo?></a></li>
+    <?php
+            $numero++;
+            }
+            echo '</ol>';
+            ?>
+    <fieldset>
+        <legend>Criar HTMLZ</legend>
+        <form action="php/acoes.php?acao=criarhtmlz&titulo=<?=$titulo?>" method="post">
+            <?php
+            $numero = 0;
+            foreach($toc as $xhtml){
+                $conteudo = $xhtml['C'];
+            ?>
+                <label for="text<?=$numero?>"><?=$xhtml['C'];?></label>
+                <input type="checkbox" name="text<?=$numero?>" id="text<?=$numero?>">
+                <br>
+            <?php
+            $numero++;
+            }
+            ?>
+            <button type="submit">Criar</button>
+        </form>
+    </fieldset>
+            <?php
         break;
     }
     ?>
