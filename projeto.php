@@ -170,16 +170,18 @@ $metadados = unserialize($projeto['metadados']);
             <table class="imagens">
                 <tbody>
                     <?php
+                    if(isset($images)){
                     foreach($images as $image){
                     ?>
                         <tr>
                             <td><?=$image?></td>
 
                             <td class="tdimg">
-                                <img onclick="visualizarImg(this)" src="projetos/<?=$titulo?>/ebook/images/<?=$image?>" alt="<?=$image?>">
+                                <img onclick="visualizarImg(this)" src="projetos/<?=$titulo?>/ebook/<?=$image?>" alt="<?=$image?>">
                             </td>
                         </tr>
                     <?php
+                    }
                     }
                     ?>
                 </tbody>

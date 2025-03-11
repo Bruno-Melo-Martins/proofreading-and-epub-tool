@@ -67,7 +67,7 @@ switch($acao){
 			}
 		
 		// Criar pastas do projeto:
-		$pastas = ["../projetos/$titulo", "../projetos/$titulo/arquivos", "../projetos/$titulo/backup", "../projetos/$titulo/ebook", "../projetos/$titulo/ebook/images"];
+		$pastas = ["../projetos/$titulo", "../projetos/$titulo/arquivos", "../projetos/$titulo/backup", "../projetos/$titulo/ebook"];
 
 		$soMinha = new SoMinha();
 		$soMinha->criarPastas($pastas);
@@ -129,8 +129,16 @@ switch($acao){
 			$projeto = $tarefaService->buscarprojeto()[0];
 
 			// Buscar imagens
-			$caminho = "./projetos/$titulo/ebook/images";
-			$images = array_diff(scandir($caminho, 1), ['.', '..']);
+			$caminho = "./projetos/$titulo/ebook";
+			$arquivos = array_diff(scandir($caminho, 1), ['.', '..']);
+
+			foreach($arquivos as $arquivo){
+				if(is_file("$caminho/$arquivo")){
+					if(getimagesize("$caminho/$arquivo")){
+						$images[] = $arquivo;
+					}
+				}
+			}
 			
 		break;
 		/* CONECTADO EM PÁGINA PROJETO.PHP */
@@ -235,13 +243,13 @@ switch($acao){
 				$nome = pathinfo($image, PATHINFO_BASENAME);	
 			}
 
-			$caminho = "../projetos/$titulo/ebook/images/$nome";
+			$caminho = "../projetos/$titulo/ebook/$nome";
 			move_uploaded_file($_FILES['imagem']['tmp_name'], $caminho);
 		break;
 
 		case 'excluirimagens':
 			$VoltarAPaginaAnterior = true;
-			$caminho = "../projetos/$titulo/ebook/images/$_POST[nome]";
+			$caminho = "../projetos/$titulo/ebook/$_POST[nome]";
 			unlink($caminho);
 		break;
 		case 'restaurarbackup':
@@ -348,6 +356,7 @@ switch($acao){
 			$projeto = $tarefaService->buscarprojeto()[0];
 			$toc = unserialize($projeto['toc']);
 			$idioma = $projeto['idioma'];
+			$metadados = unserialize($projeto['metadados']);
 
 			$pastas = ["../projetos/$titulo/htmlz"];
 			$soMinha = new SoMinha();
@@ -362,11 +371,20 @@ switch($acao){
 			}
 
 			$soMinha = new SoMinha();
-			$soMinha->criarHtmlz($textos, $titulo, $idioma);
+			$soMinha->criarHtmlz($textos, $titulo, $idioma, $metadados);
 
 			// Buscar imagens
-			$caminho = "../projetos/$titulo/ebook/images/";
-			$images = array_diff(scandir($caminho, 1), ['.', '..']);
+			$caminho = "../projetos/$titulo/ebook";
+			$arquivos = array_diff(scandir($caminho, 1), ['.', '..']);
+
+			foreach($arquivos as $arquivo){
+				if(is_file("$caminho/$arquivo")){
+					if(getimagesize("$caminho/$arquivo")){
+						$images[] = $arquivo;
+					}
+				}
+			}
+
 			foreach($images as $image){
 				copy("$caminho$image", "../projetos/$titulo/htmlz/$image");
 			}

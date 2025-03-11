@@ -56,5 +56,5 @@ function mudarMiniatura(select){
     var titulo = document.getElementById("titulo").innerHTML;
     var miniatura = document.getElementById("miniatura");
     
-    miniatura.setAttribute("src", 'projetos/'+titulo+'/ebook/images/'+select.value);
+    miniatura.setAttribute("src", 'projetos/'+titulo+'/ebook/'+select.value);
 }

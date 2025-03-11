@@ -364,10 +364,17 @@ class SoMinha {
 
 	}
 
-	public function criarHtmlz($textos, $titulo, $idioma){
+	public function criarHtmlz($textos, $titulo, $idioma, $metadados){
 		$htmlz = fopen("../projetos/$titulo/htmlz/index.html", "w");
+		$header = "<!DOCTYPE html>\n<html lang=\"$idioma\">\n<head>\n    <meta charset=\"UTF-8\">\n	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
+
+		foreach($metadados as $name => $content){
+			$header .= "\t<meta name=\"$name\" content=\"$content\"/>\n";
+		}
+
+		$header .= "\t<title>$titulo</title>\n\t<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>\n</head>\n<body>\n";
 		
-		fwrite($htmlz, "<!DOCTYPE html>\n<html lang=\"$idioma\">\n<head>\n    <meta charset=\"UTF-8\">\n	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>$titulo</title>\n	<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>\n</head>\n<body>\n");
+		fwrite($htmlz, $header);
 		foreach($textos as $x){
 			$body = false;
 			$caminho = "../projetos/$titulo/ebook/text_ebook_$x.xhtml";
@@ -380,10 +387,6 @@ class SoMinha {
 
 				if(str_contains($linha, "</body>")){
 					$body = false;
-				}
-
-				if(str_contains($linha, "src=\"images/")){
-					$linha = str_replace("src=\"images/", "src=\"", $linha);
 				}
 
 				if($body && !str_contains($linha, "<body>") && !str_contains($linha, "</body>")){

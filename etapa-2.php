@@ -42,6 +42,7 @@ require 'php/acoes.php';
         iframe{
             width: 100%;
             height: 80vh;
+            zoom: 1;
         }
         .clear{
             clear: both;
@@ -65,6 +66,7 @@ require 'php/acoes.php';
             height: 90vh;
             font-family: monospace;
         }
+        
     </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -91,7 +93,11 @@ require 'php/acoes.php';
             <button type="submit" id="salva">Salvar</button>
             <button type="button" onclick="visualizarDiv(1)" id="visualizar">Visualizar</button>
             <button type="button" onclick="visualizarDiv(2)" id="editar">Editar</button>
-            <button type="button" onclick="visualizarDiv(3)" id="estilos">Estilos</button><br>
+            <button type="button" onclick="visualizarDiv(3)" id="estilos">Estilos</button>
+            <button type="button" onclick="ajustarZoom(1)">+</button>
+            <button type="button" onclick="ajustarZoom(2)">-</button>
+
+            <br>
 
             <iframe class="visualizador" name="visor" src="<?=$htmlpath?>" frameborder="0" id="conteudo"></iframe>
             <textarea spellCheck="false" class="editor" name="textohtml" id="editorhtml" hidden><?=$html?></textarea>

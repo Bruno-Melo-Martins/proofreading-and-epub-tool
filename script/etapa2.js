@@ -54,9 +54,9 @@ function mudaPagina(qual) {
 }
 
 function visualizarDiv(elemento){
-    var conteudo = document.getElementById("conteudo");
-    var editorhtml = document.getElementById("editorhtml");
-    var editorcss = document.getElementById("editorcss");
+    const conteudo = document.getElementById("conteudo");
+    const editorhtml = document.getElementById("editorhtml");
+    const editorcss = document.getElementById("editorcss");
     switch(elemento){
         case 1:
             if(!editorcss.hasAttribute("hidden")){
@@ -131,3 +131,20 @@ document.getElementById('editorhtml').addEventListener('keydown', function(e) {
 
 // Recarregar iframe
 document.getElementsByTagName("visor").contentWindow.location.reload();
+
+
+// Ajustar escala do iframe
+function ajustarZoom(valor){
+    const iframe = document.getElementById("conteudo");
+    let z = parseFloat(iframe.currentCSSZoom);
+
+    if (valor == 1) {
+        z = z + 0.1;
+    }else{
+        z = z - 0.1;
+    }
+    
+    iframe.style.zoom = z;
+
+}
+
