@@ -23,7 +23,7 @@ require 'php/acoes.php';
             padding: 0;
             margin: 0;
         }
-        .conteudo {
+        .corpo {
             display: flex;
         }
         .esquerda{
@@ -58,9 +58,6 @@ require 'php/acoes.php';
             font-size: large;
             text-decoration: none;
         }
-        canvas{
-            width: 100%;
-        }
         .editor{
             width: 100%;
             height: 90vh;
@@ -69,45 +66,35 @@ require 'php/acoes.php';
         
     </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-
 </head>
 <body>
     <p class="header"><a href="projeto.php?titulo=<?=$titulo?>"><-Voltar</a></p>
     
-    <div class="conteudo">
+    <div class="corpo">
 
         <div class="esquerda">
-            <p id="linkdolivro" hidden>projetos/<?=$titulo?>/arquivos/<?=$titulo?>.pdf</p>
-            <label for="page-number">Página:</label>
-            <input type="number" id="page-number" value="1" min="1">
-            <button type="button" onclick="mudaPagina('<')">&lArr;</button>
-            <button type="button" onclick="mudaPagina('>')">&rArr;</button>
-            <button type="button" onclick="renderPage()">Carregar Página</button> <br>
-
-            <canvas id="pdf-canvas"></canvas>
+            <!--<button type="button" onclick="recarregarIframe()">Recarregar</button> Botão para recarregar recém atualizado arquivo, não funcionou.-->
+            <label for="">Zoom:</label>
+            <button type="button" onclick="ajustarZoom(1, 'visor')">+</button>
+            <button type="button" onclick="ajustarZoom(2, 'visor')">-</button>
+            <br>
+            <iframe class="visualizador" name="visor" src="<?=$htmlpath?>" frameborder="0" id="visor"></iframe>
         </div>
         
         <form action="php/acoes.php?acao=salvarhtml&link=<?=$htmlpath?>&titulo=<?=$titulo?>" method="post">
         <div class="direita">
             <button type="submit" id="salva">Salvar</button>
-            <button type="button" onclick="visualizarDiv(1)" id="visualizar">Visualizar</button>
-            <button type="button" onclick="visualizarDiv(2)" id="editar">Editar</button>
-            <button type="button" onclick="visualizarDiv(3)" id="estilos">Estilos</button>
-            <button type="button" onclick="ajustarZoom(1)">+</button>
-            <button type="button" onclick="ajustarZoom(2)">-</button>
-
+            <button type="button" onclick="visualizarEle('html', 'css')">Editar</button>
+            <button type="button" onclick="visualizarEle('css', 'html')">Estilos</button>
             <br>
-
-            <iframe class="visualizador" name="visor" src="<?=$htmlpath?>" frameborder="0" id="conteudo"></iframe>
-            <textarea spellCheck="false" class="editor" name="textohtml" id="editorhtml" hidden><?=$html?></textarea>
+            <textarea spellCheck="false" class="editor" name="textohtml" id="editorhtml"><?=$html?></textarea>
             <textarea spellCheck="false" class="editor" name="textocss" id="editorcss" hidden><?=$css?></textarea>
         </div>
         </form>
     
     </div>
 
-    <script type="text/javascript" src="script/etapa2.js"></script>
+    <script type="text/javascript" src="script/etapa2-1.js"></script>
     
     
     <div class="clear"></div>

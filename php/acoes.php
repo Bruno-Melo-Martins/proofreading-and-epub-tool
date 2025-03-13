@@ -139,6 +139,12 @@ switch($acao){
 					}
 				}
 			}
+
+			// Verificar se há htmlz
+			$arquivo = "projetos/$titulo/arquivos/$titulo.htmlz";
+			if(file_exists("./$arquivo")){
+				$htmlz = "<a class=\"download\" download=\"$titulo.htmlz\" href=\"$arquivo\">Baixar</a>";
+			}
 			
 		break;
 		/* CONECTADO EM PÁGINA PROJETO.PHP */
@@ -207,7 +213,10 @@ switch($acao){
 			$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
 			$txt = $_POST['editor'];
 
+			$txt = str_replace("&", "&amp;", $txt);
+
 			$txtvet = explode("\n", $txt);
+						
 			
 			foreach($txtvet as $linha){
 				for($x = 1; $x <= 6; $x++){
@@ -304,6 +313,9 @@ switch($acao){
 			// Criar style.css
 			$txtstyle = "body{\n	margin: 0;\n	padding: 0 10%;\n}\n.titulo{\n	text-align: center;\n}\n.paragrafo{\n	text-indent: 1em;\n	text-align: justify;\n}\n.paragrafo_capitular{\n	text-indent: 0;\n	text-align: justify;\n}\n.numero_pagina{\n	position: absolute;\n	left: 94%;\n	font-size: 0.7em;\n	text-indent: 0;\n}\n.imagem_centro{\n	display: block;\n	margin-left: auto;\n	margin-right: auto;\n}\n.versalete{\n	font-variant: small-caps;\n}\n.capitular1{\n	float: left;\n	height: 20em;\n}\n.clear{\n	clear: both;\n}";
 			$caminho = "../projetos/$titulo/ebook/style.css";
+			if($forma == 'poesia'){
+				$txtstyle .= "\ndiv.canto{\n\twhite-space: pre;\n\ttext-indent:-1em;\n\tmargin-right: 1em;\n}\np.verso{\n\tmargin: 0;\n\tpadding: 0;\n}";
+			}
 			$style = fopen($caminho, "w");
 			fwrite($style, $txtstyle);
 			fclose($style);
@@ -340,6 +352,8 @@ switch($acao){
 			$texto = $_POST['textohtml'];
 			$textocss = $_POST['textocss'];
 			$css = "../projetos/$titulo/ebook/style.css";
+
+			$texto = str_replace("&", "&amp;", $texto);
 
 			//echo "$texto <br> $textocss";
 			file_put_contents($link, $texto);
@@ -401,7 +415,10 @@ switch($acao){
 			$soMinha = new SoMinha();
 			$soMinha->criarMetadataOPF($tempagina,$titulo, $idioma, $metadados, $autor);
 
-
+			// Criar htmlz e disponibilizá-lo para download:
+			$pasta = "../projetos/$titulo/htmlz/";
+			$soMinha = new SoMinha();
+			$soMinha->zipHtmlz($pasta, $titulo);
 		break;
 }
 

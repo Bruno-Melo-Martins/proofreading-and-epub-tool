@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="book-id">
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:identifier id="book-id">urn:uuid:12345678-1234-1234-1234-123456789abc</dc:identifier>
+		<dc:title>Le miroir de l'âme pechéresse</dc:title>
+		<dc:language>fr</dc:language>
+		<dc:creator>Marguerite de Navarre</dc:creator>
+		<dc:publication>1549</dc:publication>
+	</metadata>
+	<manifest>
+		<item id="index" href="index.html" media-type="application/html"/>
+	</manifest>
+	
+	<spine>
+		<itemref idref="index" href="index.html" media-type="application/html" />
+	</spine>
+</package>

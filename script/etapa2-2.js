@@ -128,14 +128,15 @@ document.getElementById('editorhtml').addEventListener('keydown', function(e) {
         this.selectionEnd = start + 1;
     }
   });
+  
 
 // Recarregar iframe
 document.getElementsByTagName("visor").contentWindow.location.reload();
 
 
 // Ajustar escala do iframe
-function ajustarZoom(valor){
-    const iframe = document.getElementById("conteudo");
+function ajustarZoom(valor, id){
+    const iframe = document.getElementById(id);
     let z = parseFloat(iframe.currentCSSZoom);
 
     if (valor == 1) {
@@ -147,4 +148,3 @@ function ajustarZoom(valor){
     iframe.style.zoom = z;
 
 }
-

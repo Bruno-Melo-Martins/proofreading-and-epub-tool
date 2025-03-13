@@ -272,12 +272,12 @@ class SoMinha {
 							$paragrafo = "<p class=\"paragrafo\">$linha";
 							$final[$x] = $paragrafo;
 						}else{
-							$paragrafo = " $linha";
+							$paragrafo = "\n$linha";
 							$final[$x] .= $paragrafo;
 						}
 						foreach($pontuacao as $ponto){
 							if(str_ends_with($paragrafo, $ponto)){
-								$final[$x] .= '</p>';
+								$final[$x] .= "</p>\n";
 								$x++;
 								$paragrafo = '';
 							}
@@ -286,7 +286,7 @@ class SoMinha {
 						// Porém, se a linha atual é um título, e o paragrafo anterior 'não nulo' não foi fechado ainda, agora ele será fechado
 						//echo $linha;
 						if($paragrafo != ''){
-							$final[$x] .= '</p>';
+							$final[$x] .= "</p>\n";
 							$x++;
 							$paragrafo = '';
 						}
@@ -296,18 +296,23 @@ class SoMinha {
 					}
 				}
 				break;
-				case 'poesia':
-					$x = 0;
-					foreach($linhas as $linha){
-						if(!str_starts_with($linha, '<h') && $linha != ''){
-							$final[$x] = "<p class=\"verso\">$linha</p>";
-						}else{
-							// Se for título adicione-o normalmente
-							$final[$x] = $linha;
+			case 'poesia':
+				$x = 0;
+				foreach($linhas as $linha){
+
+					$backup = $linha;
+					$linha = "<p class=\"verso\">$linha</p>";
+					foreach(["<h", "<div", "</div"] as $ele){
+						if(str_contains($linha, $ele)){
+							$linha = $backup;
+							break;
 						}
-						$x++;
 					}
-					break;
+					
+					$final[$x] = $linha;
+					$x++;
+				}
+			break;
 		}
 
 		/*foreach($final as $f){
@@ -426,6 +431,20 @@ class SoMinha {
 		
 		fwrite($metadata, $texto);
 		fclose($metadata);
+	}
+
+	public function zipHtmlz($pasta, $titulo){
+		// Conseguir todos os arquivos
+		$arquivos = array_diff(scandir($pasta, 1), ['.', '..']);
+		$zip = new ZipArchive();
+		$htmlzFile = "../projetos/$titulo/arquivos/$titulo.htmlz";
+
+		if($zip->open($htmlzFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE){
+			foreach($arquivos as $arquivo){
+				$zip->addFile("$pasta$arquivo", $arquivo);
+			}
+			$zip->close();
+		}
 	}
 
 

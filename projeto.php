@@ -9,6 +9,8 @@ require "php/acoes.php";
 //print_r($projeto);
 $data = date("j/m/Y",strtotime($projeto['criado']));
 $metadados = unserialize($projeto['metadados']);
+$etapa = $projeto['etapa'];
+$tipo = $projeto["tipo"];
 
 ?>
 <!DOCTYPE html>
@@ -87,15 +89,19 @@ $metadados = unserialize($projeto['metadados']);
         <p class="titulo" id="titulo"><?=$titulo?></p>
     </header>
     <p>Data de criação: <?=$data?></p>
-    <p>Etapa: <?=$projeto['etapa']?></p>
+    <p>Etapa: <?=$etapa?></p>
+    <!--ÁREA PARA IR AO ETAPA-2-->
     <?php
-    switch($projeto['etapa']){
+    
+    switch($etapa){
+        // Editar o txt Etapa 1
         case 1:
     ?>
-        <a href="etapa-1.php?titulo=<?=$titulo?>&forma=<?=$projeto['forma']?>">Editar</a>
+        <a href="etapa-1.php?titulo=<?=$titulo?>&amp;forma=<?=$projeto['forma']?>">Editar</a>
         <a onclick="return confirm('Tem certeza que quer subir a Etapa?');" href="php/acoes.php?acao=subiretapa&titulo=<?=$titulo?>">Subir Etapa</a>
     <?php
         break;
+        // Editar os xhtml Etapa 2
         case 2:
             $toc = unserialize($projeto['toc']);
             echo '<ol>';
@@ -103,15 +109,16 @@ $metadados = unserialize($projeto['metadados']);
             foreach($toc as $xhtml){
                 $conteudo = $xhtml['C'];
     ?>
-            <li><a href="etapa-2.php?titulo=<?=$titulo?>&html=text_ebook_<?=$numero?>.xhtml"><?=$conteudo?></a></li>
+            <li><a href="etapa-2-<?=$tipo?>.php?titulo=<?=$titulo?>&amp;html=text_ebook_<?=$numero?>.xhtml"><?=$conteudo?></a></li>
     <?php
             $numero++;
             }
             echo '</ol>';
             ?>
-    <fieldset>
+
+    <fieldset> <!--CRIAR HTMLZ PARA USAR NO PROGRAMA CALIBRE-->
         <legend>Criar HTMLZ</legend>
-        <form action="php/acoes.php?acao=criarhtmlz&titulo=<?=$titulo?>" method="post">
+        <form action="php/acoes.php?acao=criarhtmlz&amp;titulo=<?=$titulo?>" method="post">
             <?php
             $numero = 0;
             foreach($toc as $xhtml){
@@ -123,6 +130,9 @@ $metadados = unserialize($projeto['metadados']);
             <?php
             $numero++;
             }
+            if(isset($htmlz)){
+                echo $htmlz;
+            }
             ?>
             <button type="submit">Criar</button>
         </form>
@@ -132,7 +142,7 @@ $metadados = unserialize($projeto['metadados']);
     }
     ?>
 
-    <fieldset>
+    <fieldset> <!--ALTERAR METADADOS-->
         <legend>Alterar Metadados</legend>
         <form action="php/acoes.php?acao=alterarmetadados&titulo=<?=$titulo?>" method="post">
             <?php
@@ -166,7 +176,7 @@ $metadados = unserialize($projeto['metadados']);
     </fieldset>
 
     <fieldset>
-        <legend>Imagens do projeto</legend>
+        <legend>Imagens do projeto</legend> <!--ALTERAR IMAGENS-->
             <table class="imagens">
                 <tbody>
                     <?php
@@ -221,7 +231,7 @@ $metadados = unserialize($projeto['metadados']);
             </fieldset>
     </fieldset>
 
-    <div hidden class="vignetta" id="vignetta">
+    <div hidden class="vignetta" id="vignetta"> <!--DIV PARA VISUALIZAR IMAGEM AMPLIADA-->
         <div class="content" id="ad">
             <button onclick="desVisualizarImg()">X</button>
             <p>Imagem Ampliada</p>

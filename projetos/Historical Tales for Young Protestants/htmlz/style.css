@@ -1,3 +1,4 @@
+/* *{	border: 1px solid black;	}*/
 body{
 	margin: 0;
 	padding: 0 10%;
@@ -9,13 +10,28 @@ body{
 	text-indent: 1em;
 	text-align: justify;
 	}
-.paragrafo_capitular{
+p.capitular {
 	text-indent: 0;
 	text-align: justify;
+	margin-top: 0;  /*Evita espaçamentos inesperados */
 	}
-.capitular1{
-	page-break-inside: avoid;
-	width: 20%;
+p.capitular::first-letter {
+	opacity: 0; /* Em vez de visibility: hidden */
+	position: absolute;  /*Remove do fluxo sem ocupar espaço */
+	margin-left: -0.7em;
+	}
+div.capitular {
+	line-height: 1;
+	margin-right: 0.4em; /* Espaço entre a imagem e o texto */
+	margin-top: 0.1em; /* Reduz o espaçamento superior */
+	}
+.capitular img {
+float: left; /* Faz a imagem flutuar ao lado do texto */
+max-width: 15%; /* Mantém a imagem responsiva */
+height: auto;
+margin-right: 0.4em; /* Espaço entre a imagem e o texto */
+margin-top: 0; /* Remove espaços extras acima */
+vertical-align: top; /* Alinha melhor com o texto */
 	}
 .numeropagina{
 	position: absolute;
@@ -29,9 +45,6 @@ div.imagem_centro{
 	}
 .versalete{
 	font-variant: small-caps;
-	}
-.capitular img{
-	float: left;
 	}
 .clear{
 	clear: both;
@@ -80,5 +93,3 @@ table.toc{
 	letter-spacing: 3px;
 	line-height: 0.9em;
 }
-#bloco3{
-	}
