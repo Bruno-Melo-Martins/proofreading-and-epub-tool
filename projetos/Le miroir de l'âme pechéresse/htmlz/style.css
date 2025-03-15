@@ -1,3 +1,4 @@
+/**{border: 1px solid black}*/
 body{
 	margin: 0;
 	padding: 0 10%;
@@ -27,22 +28,30 @@ body{
 .versalete{
 	font-variant: small-caps;
 }
-p.capitular:first-letter {
-	visibility: hidden;
-	color: transparent;
-    margin-left: -0.9em;
+.capitular{ 
+  line-height: 1.2;
+  margin-right: 2em;
+  margin-top: 0.1em;
+  float: left;
+  max-width: 15%;
 }
-img.capitular{
-	float: left;
-	margin-right: 0.5em;
-}
+.capitular img{
+  height: auto;
+  line-height: 1.2;
+  page-break-inside: avoid;
+  text-indent: 0;
+  vertical-align: top;
+  height: auto;
+  width: 100%;
 
+max-width: 15%; /* Evita que a imagem fique desproporcional em telas menores */
+}
 .clear{
 	clear: both;
 }
 p.verso{
 	margin: 0;
 	text-indent:-1.5em;
-	margin-right: 1.5em;
+	margin-left: 1.5em;
 	padding: 0;
 }

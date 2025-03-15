@@ -10,7 +10,9 @@
 	<manifest>
 		<item id="index" href="index.html" media-type="application/html"/>
 	</manifest>
-	
+	<guide>
+		<reference type="cover" title="cover" href="cover.jpeg"/>
+	</guide>	
 	<spine>
 		<itemref idref="index" href="index.html" media-type="application/html" />
 	</spine>

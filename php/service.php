@@ -422,8 +422,8 @@ class SoMinha {
 		// Adicionar index.html e fechar manifest:
 			$texto .= "\t\t<item id=\"index\" href=\"index.html\" media-type=\"application/html\"/>\n\t</manifest>\n";
 		// Adicionar cover.jpg ao guide
-		if($cover){
-			$texto .= "\t<guide>\n\t\t<reference type=\"cover\" title=\"cover\" href=\"cover.jpg\"/>\n\t</guide>";
+		if(isset($cover) && $cover != ""){
+			$texto .= "\t<guide>\n\t\t<reference type=\"cover\" title=\"cover\" href=\"$cover\"/>\n\t</guide>";
 		}
 		// Adicionar index.html ao spine e fechar documento:
 		$texto .= "\t\n\t<spine>\n\t\t<itemref idref=\"index\" href=\"index.html\" media-type=\"application/html\" />\n\t</spine>\n</package>";

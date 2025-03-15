@@ -400,12 +400,14 @@ switch($acao){
 				}
 			}
 
-			$tempagina = false;
 
+			// Copia as imagens da pasta ebook para htmlz e verifica se há imagem de capa
+			$capa = "";
 			foreach($images as $image){
 				copy("$caminho/$image", "../projetos/$titulo/htmlz/$image");
 				if(pathinfo("$caminho/$image", PATHINFO_FILENAME) == "cover"){
-					$tempagina = true;
+					$extensao = pathinfo("$caminho/$image", PATHINFO_EXTENSION);
+					$capa = "cover.$extensao";
 				}
 			}
 
@@ -413,7 +415,7 @@ switch($acao){
 			copy($caminho, "../projetos/$titulo/htmlz/style.css");
 
 			$soMinha = new SoMinha();
-			$soMinha->criarMetadataOPF($tempagina,$titulo, $idioma, $metadados, $autor);
+			$soMinha->criarMetadataOPF($capa,$titulo, $idioma, $metadados, $autor);
 
 			// Criar htmlz e disponibilizá-lo para download:
 			$pasta = "../projetos/$titulo/htmlz/";
