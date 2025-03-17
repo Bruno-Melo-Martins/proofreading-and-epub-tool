@@ -70,8 +70,9 @@ require 'php/acoes.php';
         }
         
     </style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <!--Este projeto usa a livraria PDF.Js da Biblioteca oficial do Mozilla-->
+    <!--Repositório: https://github.com/mozilla/pdf.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 </head>
 <body>

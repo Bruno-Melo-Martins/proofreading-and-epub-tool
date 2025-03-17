@@ -140,10 +140,14 @@ switch($acao){
 				}
 			}
 
-			// Verificar se há htmlz
+			// Verificar se há htmlz ou epub
 			$arquivo = "projetos/$titulo/arquivos/$titulo.htmlz";
 			if(file_exists("./$arquivo")){
 				$htmlz = "<a class=\"download\" download=\"$titulo.htmlz\" href=\"$arquivo\">Baixar</a>";
+			}
+			$arquivo = "projetos/$titulo/arquivos/$titulo.epub";
+			if(file_exists("./$arquivo")){
+				$epub = "<a class=\"download\" download=\"$titulo.epub\" href=\"$arquivo\">Baixar</a>";
 			}
 			
 		break;
@@ -247,9 +251,9 @@ switch($acao){
 			$extension = pathinfo($image, PATHINFO_EXTENSION);
 			
 			if(isset($_POST['nome']) && $_POST['nome'] != ''){
-				$nome = "$_POST[nome].$extension";
+				$nome = strtolower("$_POST[nome].$extension");
 			}else{
-				$nome = pathinfo($image, PATHINFO_BASENAME);	
+				$nome = strtolower(pathinfo($image, PATHINFO_BASENAME));
 			}
 
 			$caminho = "../projetos/$titulo/ebook/$nome";
@@ -373,10 +377,12 @@ switch($acao){
 			$metadados = unserialize($projeto['metadados']);
 			$autor = $projeto['autor'];
 
+			// Criar a pasta htmlz
 			$pastas = ["../projetos/$titulo/htmlz"];
 			$soMinha = new SoMinha();
 			$soMinha->criarPastas($pastas);
 
+			// Criar index.html
 			$x = 0;
 			foreach($toc as $title){
 				if(isset($_POST["text$x"]) && $_POST["text$x"] == 'on'){
@@ -414,6 +420,7 @@ switch($acao){
 			$caminho = "../projetos/$titulo/ebook/style.css";
 			copy($caminho, "../projetos/$titulo/htmlz/style.css");
 
+			// Criar metadata.opf
 			$soMinha = new SoMinha();
 			$soMinha->criarMetadataOPF($capa,$titulo, $idioma, $metadados, $autor);
 
@@ -422,6 +429,68 @@ switch($acao){
 			$soMinha = new SoMinha();
 			$soMinha->zipHtmlz($pasta, $titulo);
 		break;
+		case "criarepub":
+			$VoltarAPaginaAnterior = true;
+			// Buscar projeto
+			$tarefa = new Tarefa();
+			$conexao = new Conexao();
+			$tarefa->__set('titulo', $titulo);
+			$tarefaService = new BancoDados($conexao, $tarefa);
+			$projeto = $tarefaService->buscarprojeto()[0];
+			$toc = unserialize($projeto['toc']);
+			$idioma = $projeto['idioma'];
+			$metadados = unserialize($projeto['metadados']);
+			$autor = $projeto['autor'];
+
+			// Criar a pasta epub e subpastas
+			$pastas = ["../projetos/$titulo/epub"];
+			$soMinha = new SoMinha();
+			$soMinha->criarPastas($pastas);
+
+			// Conseguir as imagens de ebook
+			$caminho = "../projetos/$titulo/ebook";
+			$arquivos = array_diff(scandir($caminho, 1), ['.', '..']);
+
+			// Copiar arquivos para pasta epub
+			$cover = false;
+			foreach($arquivos as $arquivo){
+				$file = "$caminho/$arquivo";
+				if(is_file($file)){
+					copy($file, "../projetos/$titulo/epub/$arquivo");
+					// Verificar se há um arquivo como nome cover e se é uma imagem
+					if(pathinfo($file, PATHINFO_FILENAME) == "cover" && getimagesize($file)){
+						$capa = true;
+					}
+					$files[] = $file;
+				}
+			}
+
+			// Criar cover.xhtml:
+			if($capa){
+				$covertxt = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n\t<title>Capa</title>\n</head>\n<body>\n\t<div style=\"text-align:center;\">\n\t\t<img src=\"cover.jpg\" alt=\"Capa do livro\"/>\n\t</div>\n</body>\n</html>";
+				$cover = fopen("../projetos/$titulo/epub/cover.xhtml", "w");
+				fwrite($cover, $covertxt);
+				fclose($cover);
+			}
+
+
+			// Criar content.opf
+			$soMinha = new SoMinha();
+			$soMinha->criarContentOPF($titulo, $idioma, $metadados, $autor, $files, $capa);
+
+			// Criar container.xml
+			$containertxt = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">\n\t<rootfiles>\n\t\t<rootfile full-path=\"OEBPS/content.opf\" media-type=\"application/oebps-package+xml\"/>\n\t</rootfiles>\n</container>";
+			$container = fopen("../projetos/$titulo/epub/container.xml", "w");
+			fwrite($container, $containertxt);
+			fclose($container);
+
+
+			// Criar arquivo epub
+			$caminho = "../projetos/$titulo/epub/";
+			$arquivos = array_diff(scandir($caminho, 1), ['.', '..']);
+			$soMinha = new SoMinha();
+			$soMinha->zipEpub($caminho, $titulo, $arquivos);
+			break;
 }
 
 

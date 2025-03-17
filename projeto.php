@@ -137,6 +137,18 @@ $tipo = $projeto["tipo"];
             <button type="submit">Criar</button>
         </form>
     </fieldset>
+
+    <fieldset> <!--CRIAR EPUB-->
+        <legend>Criar EPUB</legend>
+        <form action="php/acoes.php?acao=criarepub&amp;titulo=<?=$titulo?>" method="post">
+            <button type="submit">Criar</button>
+            <?php
+            if(isset($epub)){
+                echo $epub;
+            }
+            ?>
+        </form>
+    </fieldset>
             <?php
         break;
     }
@@ -163,8 +175,8 @@ $tipo = $projeto["tipo"];
             ?>
             
             <span id="n-meta" hidden >
-                <input type="text" name="meta-n" placeholder="Ex.: language">
-                <input type="text" name="valor-n" placeholder="Ex.: English">
+                <input type="text" name="meta-n" placeholder="Ex.: subject">
+                <input type="text" name="valor-n" placeholder="Ex.: Romance">
             </span>
 
             <button type="button" onclick="NovoMetadado(this)" value="maoi">Novo metadado</button>

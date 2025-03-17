@@ -25,10 +25,14 @@ div.capitular {
 	margin-right: 0.4em; /* Espaço entre a imagem e o texto */
 	margin-top: 0.1em; /* Reduz o espaçamento superior */
 	}
-img.capitular {
-	float: left;
-	margin: 0 0.5em 0 0
-}
+.capitular img {
+float: left; /* Faz a imagem flutuar ao lado do texto */
+max-width: 15%; /* Mantém a imagem responsiva */
+height: auto;
+margin-right: 0.4em; /* Espaço entre a imagem e o texto */
+margin-top: 0; /* Remove espaços extras acima */
+vertical-align: top; /* Alinha melhor com o texto */
+	}
 .numeropagina{
 	position: absolute;
 	left: 94%;
@@ -89,7 +93,3 @@ table.toc{
 	letter-spacing: 3px;
 	line-height: 0.9em;
 }
-#a-dropcap{
-	width: 200px;
-	height: auto;
-	}

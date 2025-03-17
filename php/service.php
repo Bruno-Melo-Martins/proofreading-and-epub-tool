@@ -133,7 +133,7 @@ class SoMinha {
 
 		while (!feof($arquivo)) {
 			$line = fgets($arquivo);
-			$line = trim($line);
+			//$line = trim($line);
 			$vetor[] = $line;
 
 		}
@@ -447,6 +447,112 @@ class SoMinha {
 		}
 	}
 
+	public function criarContentOPF($titulo, $idioma, $metadados, $autor, $arquivos, $cover){
+		// Caminho para content.opf
+		$content = fopen("../projetos/$titulo/epub/content.opf", "w");
+		$texto = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"bookid\" version=\"2.0\">\n\n\t<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\t\t<dc:title>$titulo</dc:title>\n\t\t<dc:creator>$autor</dc:creator>\n\t\t<dc:language>$idioma</dc:language>\n";
+		
+		// Adicionar metadados do usuário;
+		foreach($metadados as $name => $conteudo){
+			$texto .= "\t\t<dc:$name>$conteudo</dc:$name>\n";
+		}
+		$texto .= "\t\t<meta name=\"cover\" content=\"cover\"/>";
+
+		// Fechar metadata e abrir manifest
+		$texto .= "\t</metadata>\n\n\t<manifest>\n";
+
+		// Adicionar os demais arquivos:
+			// Numero de text_ebook
+			$n = 0;
+		// Primeiro vamos separar imagens e contar os xhtmls
+		foreach($arquivos as $arquivo){
+			$nome = pathinfo($arquivo, PATHINFO_FILENAME);
+			$ext = pathinfo($arquivo, PATHINFO_EXTENSION);
+			$filename  = "$nome.$ext";
+			// Contador de capítulos:
+			// Detectar a cover
+			if(getimagesize($arquivo)){
+
+				if ($nome != "cover"){
+					$images[] = "\t\t<item id=\"$nome\" href=\"$filename\" media-type=\"image/jpeg\"/>\n";
+				}else{
+					$capa = $filename;
+				}
+
+			}else{
+				if(str_contains($nome, "text_ebook")){
+					$n++;
+				}
+			}
+		}
+		//Adicionar capa se houver:
+		if($cover){
+			// Adicionar imagem
+			$texto .= "\t\t<item properties=\"cover-image\" id=\"cover\" href=\"$capa\" media-type=\"image/jpeg\"/>\n";
+			// Adicionar page xhtml
+			$texto .= "\t\t<item id=\"coverpage\" href=\"cover.xhtml\" media-type=\"application/xhtml+xml\"/>\n";
+		}
+		// Adicionar estilo
+		$texto .= "\t\t<item id=\"style\" href=\"style.css\" media-type=\"text/css\"/>\n";
+		// Adicionar xhtml em orderm
+		$n--;
+		for($x = 0; $x <= $n; $x++){
+			$texto .= "\t\t<item id=\"chapter$x\" href=\"text_ebook_$x.xhtml\" media-type=\"application/xhtml+xml\"/>\n";
+		}
+		// Adicionar imagens após cover:
+		foreach($images as $image){
+			$texto .= $image;
+		}
+
+		// Adicionar nav (Mais tarde adicionaremos TOC.NCX) e fechar manifest
+		$texto .= "\t\t<item id=\"nav\" href=\"nav.xhtml\" media-type=\"application/xhtml+xml\" properties=\"nav\"/>\n\t</manifest>\n";
+
+		// Abrir spine e colocar capitulos
+		$texto .= "\t<spine>\n";
+		// Se há capa colocá-la primeiro:
+		if($cover){
+			$texto .= "\t\t<itemref idref=\"coverpage\"/>\n";
+		}
+		for($x = 0; $x <= $n; $x++){
+			$texto .= "\t\t<itemref idref=\"chapter$x\"/>\n";
+		}
+		// Fechar spine e package:
+		$texto .= "\t</spine>\n\n</package>";
+		
+		fwrite($content, $texto);
+		fclose($content);
+	}
+
+	public function zipEpub($pasta, $titulo, $arquivos) {
+		$zip = new ZipArchive();
+		$epub = "../projetos/$titulo/arquivos/$titulo.epub";
+	
+		if ($zip->open($epub, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+		
+			// **Passo 1: Cria o arquivo mimetype SEM compressão**
+			$zip->addFromString("mimetype", "application/epub+zip");
+			$zip->setCompressionName("mimetype", ZipArchive::CM_STORE);
+	
+			// **Passo 2: Adiciona META-INF/container.xml**
+			$zip->addFile("$pasta/container.xml", "META-INF/container.xml");
+			
+			// **Passo 3: Adiciona os demais arquivos dentro de OEBPS/**
+			foreach ($arquivos as $arquivo) {
+				if ($arquivo == "container.xml" || $arquivo == "mimetype") {
+					continue; // Já adicionamos o container.xml e o mimetype
+				}
+	
+				$file = "$pasta/$arquivo";
+				$zip->addFile($file, "OEBPS/$arquivo");
+			}
+	
+			$zip->close();
+		}
+	}
+	
+	
+	
+
 
 
 }
@@ -454,3 +560,4 @@ class SoMinha {
 
 
 ?>
+

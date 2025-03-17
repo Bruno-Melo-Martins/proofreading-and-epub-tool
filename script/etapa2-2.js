@@ -1,3 +1,5 @@
+// Utilizando PDF.js - Biblioteca oficial do Mozilla
+// Repositório: https://github.com/mozilla/pdf.js
 const pdfUrl = document.getElementById("linkdolivro").innerHTML; // Caminho do PDF
 let pdfDoc = null;
 
