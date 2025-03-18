@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="bookid" version="2.0">
+
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:title>Historical Tales for Young Protestants</dc:title>
+		<dc:creator>J. H. Crosse</dc:creator>
+		<dc:language>en</dc:language>
+		<dc:subject>Christian fiction</dc:subject>
+		<dc:author>J. H. Crosse</dc:author>
+		<meta name="cover" content="cover-image"/>	</metadata>
+
+	<manifest>
+		<item properties="cover-image" id="cover" href="cover.jpg" media-type="image/jpeg"/>
+		<item id="coverpage" href="cover.xhtml" media-type="application/xhtml+xml"/>
+		<item id="style" href="style.css" media-type="text/css"/>
+		<item id="chapter0" href="text_ebook_0.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter1" href="text_ebook_1.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter2" href="text_ebook_2.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter3" href="text_ebook_3.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter4" href="text_ebook_4.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter5" href="text_ebook_5.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter6" href="text_ebook_6.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter7" href="text_ebook_7.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter8" href="text_ebook_8.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter9" href="text_ebook_9.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter10" href="text_ebook_10.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter11" href="text_ebook_11.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter12" href="text_ebook_12.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter13" href="text_ebook_13.xhtml" media-type="application/xhtml+xml"/>
+		<item id="chapter14" href="text_ebook_14.xhtml" media-type="application/xhtml+xml"/>
+		<item id="young-luther-and-ursula" href="young-luther-and-ursula.jpg" media-type="image/jpeg"/>
+		<item id="holy-bible" href="holy-bible.jpg" media-type="image/jpeg"/>
+		<item id="boston-public-library" href="boston-public-library.jpg" media-type="image/jpeg"/>
+		<item id="angel-cross" href="angel-cross.jpg" media-type="image/jpeg"/>
+		<item id="a-chapter" href="a-chapter.jpg" media-type="image/jpeg"/>
+		<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+	</manifest>
+	<spine>
+		<itemref idref="coverpage"/>
+		<itemref idref="chapter0"/>
+		<itemref idref="chapter1"/>
+		<itemref idref="chapter2"/>
+		<itemref idref="chapter3"/>
+		<itemref idref="chapter4"/>
+		<itemref idref="chapter5"/>
+		<itemref idref="chapter6"/>
+		<itemref idref="chapter7"/>
+		<itemref idref="chapter8"/>
+		<itemref idref="chapter9"/>
+		<itemref idref="chapter10"/>
+		<itemref idref="chapter11"/>
+		<itemref idref="chapter12"/>
+		<itemref idref="chapter13"/>
+		<itemref idref="chapter14"/>
+	</spine>
+
+</package>

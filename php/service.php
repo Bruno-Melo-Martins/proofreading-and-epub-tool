@@ -2,7 +2,7 @@
 
 
 //CRUD
-class TarefaService {
+class BancoDados {
 
 	private $conexao;
 	private $tarefa;
@@ -13,26 +13,24 @@ class TarefaService {
 	}
 
 
-	public function verificartabela(){
-		$query = 
-				"SELECT COUNT(*) 
-				FROM tb_projetos 
-				WHERE titulo = :titulo ";
+	public function verificarTitulos(){
+		$query = "SELECT COUNT(*) FROM tb_projetos WHERE titulo = :titulo ";
 
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->execute();
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
-		//return $stmt->fetchAll(PDO::FETCH_OBJ);
 	}
 
-	public function inserirprojetonovo() { //create
-		$query = 'INSERT INTO tb_projetos(titulo, autor, tipo) 
-		VALUES(:titulo, :autor, :tipo)';
+	public function inserirprojeto() { //create
+		$query = 'INSERT INTO tb_projetos (titulo, autor, tipo, idioma, forma, metadados) VALUES(:titulo, :autor, :tipo, :idioma, :forma, :metadados)';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->bindValue(':autor', $this->tarefa->__get('autor'));
 		$stmt->bindValue(':tipo', $this->tarefa->__get('tipo'));
+		$stmt->bindValue(':idioma', $this->tarefa->__get('idioma'));
+		$stmt->bindValue(':forma', $this->tarefa->__get('forma'));
+		$stmt->bindValue(':metadados', $this->tarefa->__get('metadados'));
 		$stmt->execute();
 	}
 
@@ -59,18 +57,26 @@ class TarefaService {
 		$stmt->execute();
 	}
 
-	public function subirEtapa2() { //read
+	public function subiretapa() { //read
 		$query = 'UPDATE tb_projetos SET etapa=2 WHERE titulo = :titulo';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
 		$stmt->execute();
 	}
 
-	public function inserirtoc(){
-		$query = 'UPDATE tb_projetos SET toc=:toc WHERE titulo = :titulo';
+	public function inserirMeta(){
+		$query = 'UPDATE tb_projetos SET metadados=:valor WHERE titulo = :titulo';
 		$stmt = $this->conexao->prepare($query);
 		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
-		$stmt->bindValue(':toc', $this->tarefa->__get('toc'));
+		$stmt->bindValue(':valor', $this->tarefa->__get('valor'));
+		$stmt->execute();
+	}
+
+	public function inserirToc(){
+		$query = 'UPDATE tb_projetos SET toc=:valor WHERE titulo = :titulo';
+		$stmt = $this->conexao->prepare($query);
+		$stmt->bindValue(':titulo', $this->tarefa->__get('titulo'));
+		$stmt->bindValue(':valor', $this->tarefa->__get('valor'));
 		$stmt->execute();
 	}
 
@@ -79,32 +85,47 @@ class TarefaService {
 }
 
 class SoMinha {
-	public function verificarelementos($files){
-		// Verificar os POST is FILE kjaljfgl
-		if(count($files) != 0){
-			foreach($files as $file){
-				if(isset($file)){
-					$resultado = "Os arquivos existem";
-					
-				}else{
-					echo 'não é arquivo <br>';
-					
-					return 'Erro: Arquivo faltando';
-				}
-				return $resultado;
+
+	public function criarPastas($pastas){
+		foreach($pastas as $pasta){
+			if(!file_exists($pasta)){
+				mkdir($pasta, 0777);
 			}
 		}
 	}
+
+	/*public function verificarElementos($elementos, $files){ NÃO FUNCIONOU
+		foreach($elementos as $elemento){
+			if(isset($_POST[$elemento]) && $_POST[$elemento] != ''){
+				$existe = true;
+			}else{
+				return false;
+			}
+		}
+		if(count($files) != 0){
+			foreach($files as $file){
+				if(!is_file("$_FILES[$file][tmp_name]")){
+					return false;
+				}else{
+					if(!str_contains("$_FILES[$file][tmp_name]", ".$file")){
+						return false;
+					}
+				}
+			}
+		}
+		return $existe;
+	}*/
 
 	public function txtparatexto($arquivo){
 		// Declarar string
 		$fonte = '';
 		while (!feof($arquivo)) {
 			$line = fgets($arquivo);
-			$line = trim($line);
-			$fonte .= $line. PHP_EOL;
+			$line = preg_replace("/^[ ]+|[ ]+$/m", "", $line); // Remove espaços no início e fim de cada linha, mas mantém tabs
 
+			$fonte .= $line;
 		}
+		fclose($arquivo);
 		return $fonte;
 	}
 
@@ -112,7 +133,7 @@ class SoMinha {
 
 		while (!feof($arquivo)) {
 			$line = fgets($arquivo);
-			$line = trim($line);
+			//$line = trim($line);
 			$vetor[] = $line;
 
 		}
@@ -142,180 +163,401 @@ class SoMinha {
 		return rmdir($folderPath); // Deleta a pasta vazia
 	}
 
-	public function conversordeData($data){
-		$ingles = array('of', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-		$portugues = array('de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
-		$data = str_replace($ingles, $portugues, $data);
-		return $data;
+	public function tocParaLista($titles, $links){
+		// z é o Numero de </ol> finais para adicionar, 1 por default
+		$z = 1; // Contador de ol abertos
+		$lista = "<ol>\n"; 
+		$ultimo = 0; 
+		$y = 0;
+
+		foreach ($titles as $vetor) {
+			$h = (int) $vetor['H']; 
+			$title = $vetor['C'];
+
+			if ($ultimo == 0) {
+				$ultimo = $h;
+			} elseif ($h > $ultimo) { 
+				// Abrir novo nível de lista
+				// Para obedecer o XHTML restrito
+				if($links){
+					$lista = substr($lista, 0, -6);
+					$lista .= "\n<ol>\n"; 
+				}else{
+					$lista .= "<ol>\n"; 
+				}
+				$z++;
+			} elseif ($h < $ultimo) { 
+				// Fechar listas até alcançar o nível correto
+				while ($h < $ultimo) {
+					if($links){
+						$lista .= "</ol></li>\n"; 
+					}else{
+						$lista .= "</ol>\n";
+					}	
+					$z--;
+					$ultimo--;
+				}
+			}
+
+			// Adicionar item da lista
+			if ($links) {
+				$lista .= "<li><a href=\"text_ebook_$y.xhtml\">$title</a></li>\n";
+				$y++;
+			} else {
+				$lista .= "<li>$title</li>\n";
+			}
+
+			$ultimo = $h;
+		}
+
+		// Fechar quaisquer listas abertas no final
+		while ($z > 1) {
+			if($links){
+				$lista .= "</ol></li>\n";
+			}else{
+				$lista .= "</ol>\n";
+			}
+			
+			$z--;
+		}
+
+		$lista .= "</ol>\n";
+		return $lista;
 	}
 
-	public function dividirxhtml($titulo){
+	/*public function conversordeData($data){
+		$ingles = ['of', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		$portugues = ['de', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+		$data = str_replace($ingles, $portugues, $data);
+		return $data;
+	}*/
+
+	public function dividirxhtml($titulo, $forma, $idioma){
 		$txtpath = "../projetos/$titulo/arquivos/$titulo.txt";
 		$txt = fopen($txtpath, 'r');
 		$linhas = $this->txtparavetor($txt);
 
-		$x=0;
-		$titles = array('<(H1)>', '<(H2)>', '<(H3)>');
+		$x = 0;
+		// Para o id de cada tag título
+		$z = 0;
 
 		foreach($linhas as $linha){
-			foreach($titles as $title){
-				if(str_contains($linha, $title)){
-					$linha = str_replace($title, '', $linha);
+			for($y = 1; $y <= 6; $y++){
+				if(str_contains($linha, "<h$y>")){
+					// Colocar class nos títulos
+					$linha = str_replace("<h$y>", "<h$y class=\"titulo titulo$y\" id=\"ti$z\">", $linha);
+					$z++;
 					$linha = trim($linha);
-					switch($title){
-						case '<(H1)>':
-							$linhas[$x] = "<h1 class='ti-1'>$linha</h1>";
-							break;
-						case '<(H2)>':
-							$linhas[$x] = "<h2 class='ti-2'>$linha</h2>";
-							break;
-						case '<(H3)>':
-							$linhas[$x] = "<h3 class='ti-3'>$linha</h3>";
-							break;
-					}
+					$linhas[$x] = $linha;
+
+					// Conseguir o título separado
+					$paciencia = strpos($linha, ">") + 1;
+					$virtude = substr($linha, $paciencia);
+					$capitulos[] = str_replace("</h$y>", "", $virtude);
 				}
 			}
 			$x++;
 		}
-			
-		$paragrafo = '';
-		$pontuacao = array('.', '!', '?');
-		$x = 0;
-		foreach($linhas as $linha){
-			// Se a linha tiver um titulo então ele não será envelopado como parágrafo
-			if(!str_starts_with($linha, '<h')){
-				if($paragrafo == ''){
-					$paragrafo = "<p class='paragrafo'>$linha";
-					$final[$x] = $paragrafo;
-				}else{
-					$paragrafo = " $linha";
-					$final[$x] .= $paragrafo;
-				}
-				foreach($pontuacao as $ponto){
-					if(str_ends_with($paragrafo, $ponto)){
-						$final[$x] .= '</p>';
+		
+		// Conforme a forma
+		switch($forma){
+			case 'prosa':
+				$paragrafo = '';
+				$pontuacao = ['.', '!', '?'];
+				$x = 0;
+				foreach($linhas as $linha){
+					// Se a linha tiver um titulo então ele não será envelopado como parágrafo
+					if(!str_starts_with($linha, '<h')){
+						if($paragrafo == ''){
+							$paragrafo = "<p class=\"paragrafo\">$linha";
+							$final[$x] = $paragrafo;
+						}else{
+							$paragrafo = "\n$linha";
+							$final[$x] .= $paragrafo;
+						}
+						foreach($pontuacao as $ponto){
+							if(str_ends_with($paragrafo, $ponto)){
+								$final[$x] .= "</p>\n";
+								$x++;
+								$paragrafo = '';
+							}
+						}
+					}else{
+						// Porém, se a linha atual é um título, e o paragrafo anterior 'não nulo' não foi fechado ainda, agora ele será fechado
+						//echo $linha;
+						if($paragrafo != ''){
+							$final[$x] .= "</p>\n";
+							$x++;
+							$paragrafo = '';
+						}
+						
+						$final[$x] = $linha;
 						$x++;
-						$paragrafo = '';
 					}
 				}
-			}else{
-				// Porém, se a linha atual é um título, e o paragrafo anterior 'não nulo' não foi fechado ainda, agora ele será fechado
-				//echo $linha;
-				if($paragrafo != ''){
-					$final[$x] .= '</p>';
+				break;
+			case 'poesia':
+				$x = 0;
+				foreach($linhas as $linha){
+
+					$backup = $linha;
+					$linha = "<p class=\"verso\">$linha</p>";
+					foreach(["<h", "<div", "</div"] as $ele){
+						if(str_contains($linha, $ele)){
+							$linha = $backup;
+							break;
+						}
+					}
+					
+					$final[$x] = $linha;
 					$x++;
-					$paragrafo = '';
 				}
-				
-				$final[$x] = $linha;
-				$x++;
-			}
-			
+			break;
 		}
 
+		/*foreach($final as $f){
+			echo $f;
+		}*/
+		
 		// AGORA FINALMENTE IREMOS ESCREVER NOS ARQUIVOS
 		$ebpath = "../projetos/$titulo/ebook";
 		$x = 0;
+		// Header e final de todos os arquivos em xhtml
+		$header = "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"$idioma\" lang=\"$idioma\">\n<head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"dc:title\" content=\"$titulo\" />\n    <title>placeholder</title>\n	<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" />\n</head>\n<body>\n";
+
+		$end = "\n</body>\n</html>";
 		// PRIMEIRO HTML
-		$ebooktxt = fopen("$ebpath/text_ebook_$x.html", 'w');
+		$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+		$head = str_replace("placeholder", $capitulos[$x], $header);
+		fwrite($ebooktxt, $head);
 		foreach($final as $f){
 			if(str_starts_with($f, '<h2')){
+
 				$x++;
+				fwrite($ebooktxt, $end);
 				fclose($ebooktxt);	
 				// DEMAIS HTML
-				$ebooktxt = fopen("$ebpath/text_ebook_$x.html", 'w');
+				$ebooktxt = fopen("$ebpath/text_ebook_$x.xhtml", 'w');
+				$head = str_replace("placeholder", $capitulos[$x], $header);
+				fwrite($ebooktxt, $head);
 			}
 			fwrite($ebooktxt, $f.PHP_EOL);
 		}
+
 		fclose($ebooktxt);
 		
 		
 	}
 
-	public function criartoc($titulo){
-		$tocpath = "../projetos/$titulo/arquivos/toc.xhtml";
-		$toc = fopen($tocpath, 'r');
-		$tabela = $this->txtparavetor($toc);
-		$texto = '';
-		foreach($tabela as $linha){
-			$texto .= $linha; 
+	public function criartoc($titulo, $toc){
+		// Criar lista como o toc
+		if($toc != ''){
+			$titles = unserialize($toc);
+			$links = true;
+			$lista = $this->tocParaLista($titles, $links);
+
+			$header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:epub=\"http://www.idpf.org/2007/ops\" >\n  <head><title>Índice</title></head>\n  <body>\n    <nav epub:type=\"toc\">\n";
+			$end = "	</nav>\n  </body>\n</html>";
+
+			$navtexto = "$header$lista$end";
+
+			$caminho = "../projetos/$titulo/ebook/nav.xhtml";
+			$nav = fopen($caminho, "w");
+			fwrite($nav, $navtexto);
+			fclose($nav);
 		}
 
-		$texto = str_replace('<ol><li>', '', $texto);
-		$texto = str_replace('</li></ol>', '', $texto);
+	}
 
-		$linhas = explode('</li><li>', $texto);
+	public function criarHtmlz($textos, $titulo, $idioma, $metadados){
+		$htmlz = fopen("../projetos/$titulo/htmlz/index.html", "w");
+		$header = "<!DOCTYPE html>\n<html lang=\"$idioma\">\n<head>\n    <meta charset=\"UTF-8\">\n	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
-		//print_r($linhas);
+		foreach($metadados as $name => $content){
+			$header .= "\t<meta name=\"$name\" content=\"$content\"/>\n";
+		}
 
-		$toc = '<?xml version="1.0" encoding="UTF-8"?>
+		$header .= "\t<title>$titulo</title>\n\t<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>\n</head>\n<body>\n";
+		
+		fwrite($htmlz, $header);
+		foreach($textos as $x){
+			$body = false;
+			$caminho = "../projetos/$titulo/ebook/text_ebook_$x.xhtml";
+			$txt = fopen($caminho, 'r');
+			$linhas = $this->txtparavetor($txt);
+			foreach($linhas as $linha){
+				if(str_contains($linha, "<body>")){
+					$body = true;
+				}
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="en">
-  <head>
-    <title>'.$titulo.'</title>
-  </head>
-  <body epub:type="frontmatter">
-  <nav epub:type="toc" role="doc-toc" aria-label="Table of Contents">
-      <ol>'.PHP_EOL;
-	  	
-	 	$x = 0;
-		foreach($linhas as $linha){
-			$toc .= "<li><a href='text_ebook_$x.html'>$linha</a></li>".PHP_EOL;
+				if(str_contains($linha, "</body>")){
+					$body = false;
+				}
+
+				if($body && !str_contains($linha, "<body>") && !str_contains($linha, "</body>")){
+					fwrite($htmlz, "$linha\n");
+				}
+			}
 			$x++;
 		}
-		$toc .= '
-      </ol>
-    </nav>
-  </body>
-</html>';
-		//echo $toc;
+		fwrite($htmlz, "\n  </body>\n</html>");
+		fclose($htmlz);
+	}
 
-		// CRIAR ARQUIVO TOC NA PASTA EBOOK
-		$tocpath = "../projetos/$titulo/ebook/toc.xhtml";
-		$arquivotoc = fopen($tocpath, 'w');
-		fwrite($arquivotoc, $toc);
-		fclose($arquivotoc);
+	public function criarMetadataOPF($cover, $titulo, $idioma, $metadados, $autor){
+		$metadata = fopen("../projetos/$titulo/htmlz/metadata.opf", "w");
+		$texto = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<package xmlns=\"http://www.idpf.org/2007/opf\" version=\"3.0\" unique-identifier=\"book-id\">
+\t<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\">
+\t\t<dc:identifier id=\"book-id\">urn:uuid:12345678-1234-1234-1234-123456789abc</dc:identifier>
+\t\t<dc:title>$titulo</dc:title>
+\t\t<dc:language>$idioma</dc:language>
+\t\t<dc:creator>$autor</dc:creator>\n";
+		// Adicionar metadados do usuário;
+		foreach($metadados as $name => $content){
+			$texto .= "\t\t<dc:$name>$content</dc:$name>\n";
+		}
+		// Fechar metadata e abrir manifest
+		$texto .= "\t</metadata>\n\t<manifest>\n";
+		// Adicionar index.html e fechar manifest:
+			$texto .= "\t\t<item id=\"index\" href=\"index.html\" media-type=\"application/html\"/>\n\t</manifest>\n";
+		// Adicionar cover.jpg ao guide
+		if(isset($cover) && $cover != ""){
+			$texto .= "\t<guide>\n\t\t<reference type=\"cover\" title=\"cover\" href=\"$cover\"/>\n\t</guide>";
+		}
+		// Adicionar index.html ao spine e fechar documento:
+		$texto .= "\t\n\t<spine>\n\t\t<itemref idref=\"index\" href=\"index.html\" media-type=\"application/html\" />\n\t</spine>\n</package>";
 
-		// REGISTRAR NO BANCO DE DADOS
-		$x--;
-		$y=0;
-		$toc = '';
-		foreach($linhas as $linha){
-			if($y == $x){
-				$toc .= $linha;
-			}else{
-				$toc .= "$linha ? ";
+		
+		fwrite($metadata, $texto);
+		fclose($metadata);
+	}
+
+	public function zipHtmlz($pasta, $titulo){
+		// Conseguir todos os arquivos
+		$arquivos = array_diff(scandir($pasta, 1), ['.', '..']);
+		$zip = new ZipArchive();
+		$htmlzFile = "../projetos/$titulo/arquivos/$titulo.htmlz";
+
+		if($zip->open($htmlzFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE){
+			foreach($arquivos as $arquivo){
+				$zip->addFile("$pasta$arquivo", $arquivo);
 			}
-			$y++;
+			$zip->close();
+		}
+	}
+
+	public function criarContentOPF($titulo, $idioma, $metadados, $autor, $arquivos, $cover){
+		// Caminho para content.opf
+		$content = fopen("../projetos/$titulo/epub/content.opf", "w");
+		$texto = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"bookid\" version=\"2.0\">\n\n\t<metadata xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n\t\t<dc:title>$titulo</dc:title>\n\t\t<dc:creator>$autor</dc:creator>\n\t\t<dc:language>$idioma</dc:language>\n";
+		
+		// Adicionar metadados do usuário;
+		foreach($metadados as $name => $conteudo){
+			$texto .= "\t\t<dc:$name>$conteudo</dc:$name>\n";
+		}
+		$texto .= "\t\t<meta name=\"cover\" content=\"cover\"/>";
+
+		// Fechar metadata e abrir manifest
+		$texto .= "\t</metadata>\n\n\t<manifest>\n";
+
+		// Adicionar os demais arquivos:
+			// Numero de text_ebook
+			$n = 0;
+		// Primeiro vamos separar imagens e contar os xhtmls
+		foreach($arquivos as $arquivo){
+			$nome = pathinfo($arquivo, PATHINFO_FILENAME);
+			$ext = pathinfo($arquivo, PATHINFO_EXTENSION);
+			$filename  = "$nome.$ext";
+			// Contador de capítulos:
+			// Detectar a cover
+			if(getimagesize($arquivo)){
+
+				if ($nome != "cover"){
+					$images[] = "\t\t<item id=\"$nome\" href=\"$filename\" media-type=\"image/jpeg\"/>\n";
+				}else{
+					$capa = $filename;
+				}
+
+			}else{
+				if(str_contains($nome, "text_ebook")){
+					$n++;
+				}
+			}
+		}
+		//Adicionar capa se houver:
+		if($cover){
+			// Adicionar imagem
+			$texto .= "\t\t<item properties=\"cover-image\" id=\"cover\" href=\"$capa\" media-type=\"image/jpeg\"/>\n";
+			// Adicionar page xhtml
+			$texto .= "\t\t<item id=\"coverpage\" href=\"cover.xhtml\" media-type=\"application/xhtml+xml\"/>\n";
+		}
+		// Adicionar estilo
+		$texto .= "\t\t<item id=\"style\" href=\"style.css\" media-type=\"text/css\"/>\n";
+		// Adicionar xhtml em orderm
+		$n--;
+		for($x = 0; $x <= $n; $x++){
+			$texto .= "\t\t<item id=\"chapter$x\" href=\"text_ebook_$x.xhtml\" media-type=\"application/xhtml+xml\"/>\n";
+		}
+		// Adicionar imagens após cover:
+		foreach($images as $image){
+			$texto .= $image;
 		}
 
-		$tarefa = new Tarefa();
-		$conexao = new Conexao();
+		// Adicionar nav (Mais tarde adicionaremos TOC.NCX) e fechar manifest
+		$texto .= "\t\t<item id=\"nav\" href=\"nav.xhtml\" media-type=\"application/xhtml+xml\" properties=\"nav\"/>\n\t</manifest>\n";
 
-		$tarefa->__set('titulo', $titulo);
-		$tarefa->__set('toc', $toc);
-
-		$tarefaService = new TarefaService($conexao, $tarefa);
-		$tarefaService->inserirtoc();
-
+		// Abrir spine e colocar capitulos
+		$texto .= "\t<spine>\n";
+		// Se há capa colocá-la primeiro:
+		if($cover){
+			$texto .= "\t\t<itemref idref=\"coverpage\"/>\n";
+		}
+		for($x = 0; $x <= $n; $x++){
+			$texto .= "\t\t<itemref idref=\"chapter$x\"/>\n";
+		}
+		// Fechar spine e package:
+		$texto .= "\t</spine>\n\n</package>";
+		
+		fwrite($content, $texto);
+		fclose($content);
 	}
 
-	public function criarstyle($titulo){
-
-$style = 
-'.paragrafo{
-		text-indent: 1em;
-		text-allign: justify;
-}';
-
-		// CRIAR ARQUIVO TOC NA PASTA EBOOK
-		$stylepath = "../projetos/$titulo/ebook/style.css";
-		$arquivotoc = fopen($stylepath, 'w');
-		fwrite($arquivotoc, $style);
-		fclose($arquivotoc);
-
+	public function zipEpub($pasta, $titulo, $arquivos) {
+		$zip = new ZipArchive();
+		$epub = "../projetos/$titulo/arquivos/$titulo.epub";
+	
+		if ($zip->open($epub, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+		
+			// **Passo 1: Cria o arquivo mimetype SEM compressão**
+			$zip->addFromString("mimetype", "application/epub+zip");
+			$zip->setCompressionName("mimetype", ZipArchive::CM_STORE);
+	
+			// **Passo 2: Adiciona META-INF/container.xml**
+			$zip->addFile("$pasta/container.xml", "META-INF/container.xml");
+			
+			// **Passo 3: Adiciona os demais arquivos dentro de OEBPS/**
+			foreach ($arquivos as $arquivo) {
+				if ($arquivo == "container.xml" || $arquivo == "mimetype") {
+					continue; // Já adicionamos o container.xml e o mimetype
+				}
+	
+				$file = "$pasta/$arquivo";
+				$zip->addFile($file, "OEBPS/$arquivo");
+			}
+	
+			$zip->close();
+		}
 	}
+	
+	
+	
+
+
 
 }
 
+
+
 ?>
+

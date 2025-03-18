@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="book-id">
+	<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:identifier id="book-id">urn:uuid:12345678-1234-1234-1234-123456789abc</dc:identifier>
+		<dc:title>Historical Tales for Young Protestants</dc:title>
+		<dc:language>en</dc:language>
+		<dc:creator>J. H. Crosse</dc:creator>
+		<dc:subject>Christian fiction</dc:subject>
+		<dc:author>J. H. Crosse</dc:author>
+	</metadata>
+	<manifest>
+		<item id="index" href="index.html" media-type="application/html"/>
+	</manifest>
+	<guide>
+		<reference type="cover" title="cover" href="cover.jpg"/>
+	</guide>	
+	<spine>
+		<itemref idref="index" href="index.html" media-type="application/html" />
+	</spine>
+</package>

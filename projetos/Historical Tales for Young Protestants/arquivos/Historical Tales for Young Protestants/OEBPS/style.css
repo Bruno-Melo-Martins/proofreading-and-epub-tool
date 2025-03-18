@@ -1,0 +1,95 @@
+/* *{	border: 1px solid black;	}*/
+body{
+	margin: 0;
+	padding: 0 10%;
+	}
+.titulo{
+	text-align: center;
+	}
+.paragrafo{
+	text-indent: 1em;
+	text-align: justify;
+	}
+p.capitular {
+	text-indent: 0;
+	text-align: justify;
+	margin-top: 0;  /*Evita espaçamentos inesperados */
+	}
+p.capitular::first-letter {
+	opacity: 0; /* Em vez de visibility: hidden */
+	position: absolute;  /*Remove do fluxo sem ocupar espaço */
+	margin-left: -0.7em;
+	}
+div.capitular {
+	line-height: 1;
+	margin-right: 0.4em; /* Espaço entre a imagem e o texto */
+	margin-top: 0.1em; /* Reduz o espaçamento superior */
+	}
+.capitular img {
+float: left; /* Faz a imagem flutuar ao lado do texto */
+max-width: 15%; /* Mantém a imagem responsiva */
+height: auto;
+margin-right: 0.4em; /* Espaço entre a imagem e o texto */
+margin-top: 0; /* Remove espaços extras acima */
+vertical-align: top; /* Alinha melhor com o texto */
+	}
+.numeropagina{
+	position: absolute;
+	left: 94%;
+	font-size: 0.7em;
+	text-indent: 0;
+	}
+div.imagem_centro{
+	text-align: center;
+	margin: auto;
+	}
+.versalete{
+	font-variant: small-caps;
+	}
+.clear{
+	clear: both;
+	}
+table.quadro {
+	border: 0.2em solid black;
+	margin: 0 auto;
+	width: fit-content;
+	}
+table.quadro td{
+	border: 0.1em solid black;
+	}
+table.toc{
+	margin: 0 auto;
+	text-transform: lowercase;
+	font-variant-numeric: oldstyle;
+	}
+.quebra{
+	page-break-before: always;
+	}
+.pretexto{
+	white-space: pre;
+	}
+.titulo1 {
+	letter-spacing: 2px;
+	font-stretch: condensed;
+	font-weight: lighter;
+	}
+#bloco1 {
+	font-size: 0.5em;
+	letter-spacing: 1px;
+	}
+#bloco2 {
+	font-size: 0.8em;
+	letter-spacing: -0.05em;
+	}
+.desespacado p{
+	margin: 3px;
+	}
+.titulo_repetido{
+	text-transform: lowercase;
+	font-variant: small-caps;
+	white-space: pre;
+	text-align: center;
+	font-size: 30pt;
+	letter-spacing: 3px;
+	line-height: 0.9em;
+}
