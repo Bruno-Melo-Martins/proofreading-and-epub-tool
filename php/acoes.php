@@ -428,6 +428,12 @@ switch($acao){
 			$pasta = "../projetos/$titulo/htmlz/";
 			$soMinha = new SoMinha();
 			$soMinha->zipHtmlz($pasta, $titulo);
+
+			
+			// Excluir a pasta htmlz
+			$caminho = "../projetos/$titulo/htmlz";
+			$soMinha = new SoMinha();
+			$soMinha->deletarPasta($caminho);
 		break;
 		case "criarepub":
 			$VoltarAPaginaAnterior = true;
@@ -460,6 +466,7 @@ switch($acao){
 					// Verificar se há um arquivo como nome cover e se é uma imagem
 					if(pathinfo($file, PATHINFO_FILENAME) == "cover" && getimagesize($file)){
 						$capa = true;
+						$capa_basename = pathinfo($file, PATHINFO_BASENAME);
 					}
 					$files[] = $file;
 				}
@@ -467,7 +474,7 @@ switch($acao){
 
 			// Criar cover.xhtml:
 			if($capa){
-				$covertxt = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n\t<title>Capa</title>\n</head>\n<body>\n\t<div style=\"text-align:center;\">\n\t\t<img src=\"cover.jpg\" alt=\"Capa do livro\"/>\n\t</div>\n</body>\n</html>";
+				$covertxt = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n\t<title>Capa</title>\n</head>\n<body>\n\t<div style=\"text-align:center;\">\n\t\t<img src=\"$capa_basename\" alt=\"Capa do livro\"/>\n\t</div>\n</body>\n</html>";
 				$cover = fopen("../projetos/$titulo/epub/cover.xhtml", "w");
 				fwrite($cover, $covertxt);
 				fclose($cover);
@@ -490,7 +497,14 @@ switch($acao){
 			$arquivos = array_diff(scandir($caminho, 1), ['.', '..']);
 			$soMinha = new SoMinha();
 			$soMinha->zipEpub($caminho, $titulo, $arquivos);
+
+			// Excluir a pasta epub
+			$caminho = "../projetos/$titulo/epub";
+			$soMinha = new SoMinha();
+			$soMinha->deletarPasta($caminho);
+
 			break;
+
 }
 
 

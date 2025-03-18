@@ -1,11 +1,6 @@
 // Recarregar iframe ao carregar a página
 document.getElementsByTagName("visor").contentWindow.location.reload();
 
-/*function recarregarIframe(){ Não funcionou somente o velho Alt+F5 dá conta
-    var iframe = document.getElementById("visor");
-    iframe.reload();
-}*/
-
 function visualizarEle(id1, id2){
     // Elemento que será mostrado
     const mostrar = document.getElementById("editor"+id1);

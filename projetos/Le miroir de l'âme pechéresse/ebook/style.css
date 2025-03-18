@@ -5,15 +5,30 @@ body{
 }
 .titulo{
 	text-align: center;
+	white-space: pre;
 }
 .paragrafo{
 	text-indent: 1em;
 	text-align: justify;
 }
-.paragrafo_capitular{
-	text-indent: 0;
-	text-align: justify;
-}
+p.capitular {
+	text-indent: -1.5em;
+	margin: 0;
+	text-align: left;
+	}
+p.capitular::first-letter {
+	opacity: 0;
+	margin-left: -0.5em; 
+	font-family: monospace;
+	}
+div.capitular {
+	line-height: 1;
+	margin-top: 0.1em; /* Reduz o espaçamento superior */
+	}
+img.capitular {
+	float: left;
+	margin-right: 2em;
+	}
 .numero_pagina{
 	position: absolute;
 	left: 94%;
@@ -22,29 +37,10 @@ body{
 }
 .imagem_centro{
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	text-align: center;
 }
 .versalete{
 	font-variant: small-caps;
-}
-.capitular{ 
-  line-height: 1.2;
-  margin-right: 2em;
-  margin-top: 0.1em;
-  float: left;
-  max-width: 15%;
-}
-.capitular img{
-  height: auto;
-  line-height: 1.2;
-  page-break-inside: avoid;
-  text-indent: 0;
-  vertical-align: top;
-  height: auto;
-  width: 100%;
-
-max-width: 15%; /* Evita que a imagem fique desproporcional em telas menores */
 }
 .clear{
 	clear: both;
@@ -54,4 +50,24 @@ p.verso{
 	text-indent:-1.5em;
 	margin-left: 1.5em;
 	padding: 0;
+	text-align: left;
 }
+#image1{
+	width: 70px;
+	height: auto;
+	}
+#image2{
+	width: 400px;
+	height: auto;
+	}
+#image3{
+	width: 180px;
+	height: auto;
+	}
+#image5{
+	width: 110px;
+	}
+#image6{
+	width: 4em;
+	height: auto;
+	}

@@ -28,12 +28,12 @@
 		<item id="chapter12" href="text_ebook_12.xhtml" media-type="application/xhtml+xml"/>
 		<item id="chapter13" href="text_ebook_13.xhtml" media-type="application/xhtml+xml"/>
 		<item id="chapter14" href="text_ebook_14.xhtml" media-type="application/xhtml+xml"/>
-		<item id="young-luther-and-ursula" href="young-luther-and-ursula.jpg" media-type="image/jpeg"/>
-		<item id="holy-bible" href="holy-bible.jpg" media-type="image/jpeg"/>
-		<item id="forbes-library" href="forbes-library.jpg" media-type="image/jpeg"/>
-		<item id="boston-public-library" href="boston-public-library.jpg" media-type="image/jpeg"/>
-		<item id="angel-cross" href="angel-cross.jpg" media-type="image/jpeg"/>
-		<item id="a-chapter" href="a-chapter.jpg" media-type="image/jpeg"/>
+		<item id="young-luther-and-ursula" href="young-luther-and-ursula.JPG" media-type="image/jpeg"/>
+		<item id="holy-bible" href="holy-bible.JPG" media-type="image/jpeg"/>
+		<item id="forbes-library" href="forbes-library.JPG" media-type="image/jpeg"/>
+		<item id="boston-public-library" href="boston-public-library.JPG" media-type="image/jpeg"/>
+		<item id="angel-cross" href="angel-cross.JPG" media-type="image/jpeg"/>
+		<item id="A-chapter" href="A-chapter.JPG" media-type="image/jpeg"/>
 		<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
 	</manifest>
 	<spine>

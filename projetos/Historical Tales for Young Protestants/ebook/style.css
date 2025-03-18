@@ -17,8 +17,8 @@ p.capitular {
 	}
 p.capitular::first-letter {
 	opacity: 0; /* Em vez de visibility: hidden */
-	position: absolute;  /*Remove do fluxo sem ocupar espaço */
-	margin-left: -0.7em;
+	font-family: monospace;
+	margin-left: -0.5em;
 	}
 div.capitular {
 	line-height: 1;
@@ -90,6 +90,6 @@ table.toc{
 	line-height: 0.9em;
 }
 #a-dropcap{
-	width: 200px;
+	width: 150px;
 	height: auto;
 	}
