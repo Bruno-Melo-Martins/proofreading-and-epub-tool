@@ -7,12 +7,8 @@ if(isset($_GET['titulo'])){
 }
 $pagina = "projeto.php?titulo=$titulo";
 
-
 $acao = 'buscartxt';
 require 'php/acoes.php';
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +51,11 @@ require 'php/acoes.php';
             border: 2px solid #4CAF50;
         }
     </style>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/css/css.min.js"></script>
+    
 </head>
 <body>
     <header>

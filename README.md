@@ -7,3 +7,5 @@ Este projeto utiliza a biblioteca [PDF.js](https://mozilla.github.io/pdf.js/) de
 
 Repositório oficial: [https://github.com/mozilla/pdf.js](https://github.com/mozilla/pdf.js)
 Licença: [Apache 2.0](https://github.com/mozilla/pdf.js/blob/master/LICENSE)
+
+Este projeto também utiliza [CodeMirror](https://codemirror.net/), uma biblioteca de edição de código em JavaScript desenvolvida por Marijn Haverbeke e colaboradores.

@@ -1,37 +1,38 @@
 // Já começando zero bala
-// CÓDIGO PARA O TAMANHO DO TEXTAREA
-/*var editor = document.getElementById("editor");
-editor.style.height = "";
-editor.style.height = editor.scrollHeight + "px";
-
-function readaptar(){
-    var editor = document.getElementById("editor");
-    editor.style.height = "";
-    editor.style.height = editor.scrollHeight + "px";
-}*/
+// Código do CodeMirror
+var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+    mode: "htmlmixed",
+    theme: "dark",
+    lineNumbers: true,
+    indentWithTabs: true,
+    tabSize: 2
+});
 
 // INSERIR TITULOS
 function inserirTag(titulo, botao) {
-    var editor = document.getElementById("editor");
-    var curPos = editor.selectionStart;
-    let x = editor.value; 
+    var editor = window.editor; // Obtém o objeto CodeMirror global
+    var doc = editor.getDoc();  // Acessa o documento do editor
 
-    if(botao.classList.contains("bt-1")){
+    var cursor = doc.getCursor(); // Obtém a posição do cursor
+    var curPos = { line: cursor.line, ch: cursor.ch }; // Posição exata do cursor
+    //alert("Posição do cursor: " + JSON.stringify(curPos));
+
+    let x = doc.getValue(); // Obtém o texto atual do editor
+
+    if (botao.classList.contains("bt-1")) {
         botao.classList.remove("bt-1");
         botao.classList.add("bt-2");
-        editor.value = (x.slice(0, curPos)+ "<" + titulo + ">" + x.slice(curPos));
 
-    }else{
-        if(botao.classList.contains("bt-2")){
+        // Insere a tag de abertura na posição do cursor
+        doc.replaceRange("<" + titulo + ">", curPos);
+    } else {
+        if (botao.classList.contains("bt-2")) {
             botao.classList.remove("bt-2");
             botao.classList.add("bt-1");
-            if(titulo.includes("div")){
-                editor.value = (x.slice(0, curPos)+ "</div>" + x.slice(curPos));    
-            }else{
-                editor.value = (x.slice(0, curPos)+ "</" + titulo + ">" + x.slice(curPos));    
-            }
-            editor.selectionStart = curPos;
-            editor.selectionEnd = curPos + 4;
+
+            // Insere a tag de fechamento
+            var fechamento = titulo.includes("div") ? "</div>" : "</" + titulo + ">";
+            doc.replaceRange(fechamento, doc.getCursor()); // Insere na posição atual do cursor
         }
     }
-} 
+}

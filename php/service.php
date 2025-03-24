@@ -266,6 +266,11 @@ class SoMinha {
 				$pontuacao = ['.', '!', '?'];
 				$x = 0;
 				foreach($linhas as $linha){
+					$linha = trim($linha);
+					// Pular linhas vazias
+					if($linha == ''){
+						continue;
+					}
 					// Se a linha tiver um titulo então ele não será envelopado como parágrafo
 					if(!str_starts_with($linha, '<h')){
 						if($paragrafo == ''){
@@ -295,6 +300,7 @@ class SoMinha {
 						$x++;
 					}
 				}
+
 				break;
 			case 'poesia':
 				$x = 0;
@@ -314,6 +320,8 @@ class SoMinha {
 				}
 			break;
 		}
+		// Adicionar fechamento da última tag
+		$final[$x] .= "</p>\n";
 
 		/*foreach($final as $f){
 			echo $f;
@@ -343,6 +351,7 @@ class SoMinha {
 			}
 			fwrite($ebooktxt, $f.PHP_EOL);
 		}
+		fwrite($ebooktxt, "</body>\n</html>");
 
 		fclose($ebooktxt);
 		
@@ -380,6 +389,12 @@ class SoMinha {
 		$header .= "\t<title>$titulo</title>\n\t<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\"/>\n</head>\n<body>\n";
 		
 		fwrite($htmlz, $header);
+
+
+		// Adicionar Imagem de Capa
+		$divcapa = "<div style=\"text-align:center; page-break-inside: avoid; page-break-after: always;\">\n\t<img src=\"cover.jpg\" alt=\"Capa do livro\"/>\n</div>\n";
+		fwrite($htmlz, $divcapa);
+
 		foreach($textos as $x){
 			$body = false;
 			$caminho = "../projetos/$titulo/ebook/text_ebook_$x.xhtml";

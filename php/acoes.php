@@ -288,6 +288,7 @@ switch($acao){
 		/* MUDAR ETAPA DE 1 PARA 2 */
 		case 'subiretapa':
 			// Buscar projeto
+			$VoltarAPaginaAnterior = true;
 			$tarefa = new Tarefa();
 			$conexao = new Conexao();
 			$tarefa->__set('titulo', $titulo);
@@ -305,15 +306,15 @@ switch($acao){
 				break;
 			}
 			// Pegar o texto
-			/*$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
+			$caminho = "../projetos/$titulo/arquivos/$titulo.txt";
 			$txt = fopen($caminho, "r");
 			$soMinha = new SoMinha();
-			$texto = $soMinha->txtparatexto($txt);*/
+			$texto = $soMinha->txtparatexto($txt);
 
 			// Dividir xhtml
 			$soMinha = new SoMinha();
 			$soMinha->dividirxhtml($titulo, $forma, $idioma);
-
+			
 			// Criar style.css
 			$txtstyle = "body{\n	margin: 0;\n	padding: 0 10%;\n}\n.titulo{\n	text-align: center;\n}\n.paragrafo{\n	text-indent: 1em;\n	text-align: justify;\n}\n.paragrafo_capitular{\n	text-indent: 0;\n	text-align: justify;\n}\n.numero_pagina{\n	position: absolute;\n	left: 94%;\n	font-size: 0.7em;\n	text-indent: 0;\n}\n.imagem_centro{\n	display: block;\n	margin-left: auto;\n	margin-right: auto;\n}\n.versalete{\n	font-variant: small-caps;\n}\n.capitular1{\n	float: left;\n	height: 20em;\n}\n.clear{\n	clear: both;\n}";
 			$caminho = "../projetos/$titulo/ebook/style.css";
